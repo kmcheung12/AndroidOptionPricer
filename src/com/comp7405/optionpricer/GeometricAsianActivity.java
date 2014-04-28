@@ -12,13 +12,13 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class GeometricAsianActivity extends Activity implements  OnClickListener, OnCheckedChangeListener  {
-	Button bCalculate; 
-	EditText etStockPrice, etStrikePrice, etTimetoMaturity, etSigma, etInterestRate,etObservation;
-	RadioGroup rgOptionType;
-	TextView tvResult;
+	private Button bCalculate;
+	private EditText etStockPrice, etStrikePrice, etTimetoMaturity, etSigma, etInterestRate,etObservation;
+	private RadioGroup rgOptionType;
+	private TextView tvResult;
 	
-	int OptionType;
-	double S,K,T,Sigma,r,n;
+	private int OptionType;
+	private double S,K,T, sigma,r,n;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +54,12 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 		S = Double.parseDouble(etStockPrice.getText().toString());
 		K = Double.parseDouble(etStrikePrice.getText().toString());
 		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		Sigma = Double.parseDouble(etSigma.getText().toString());
+		sigma = Double.parseDouble(etSigma.getText().toString());
 		r = Double.parseDouble(etInterestRate.getText().toString());
 		n = Double.parseDouble(etObservation.getText().toString());
 		
 		
-		tvResult.setText(Double.toString(PriceCalculator.AsianGeometric(OptionType, S, K, T, Sigma, r, n)));
+		tvResult.setText(Double.toString(PriceCalculator.asianGeometric(OptionType, S, K, T, sigma, r, n)));
 	}
 	
 	public void initialize(){
@@ -74,8 +74,6 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
 		rgOptionType.setOnCheckedChangeListener(this);
 		etObservation = (EditText) findViewById(R.id.etObservation);
-		
-		
 	}
 
 }

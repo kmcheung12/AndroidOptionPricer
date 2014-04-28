@@ -12,8 +12,8 @@ import android.app.ListActivity;
 import android.content.Intent;
 
 public class MainActivity extends ListActivity {
-	String Pricer[] = {"European Options","Geometric Asian Option","Arithmatic Asian Option", "Geometric Baseket Option", "Arithmatic Basket Option"};
-	String ActName[] = {"EuorpeanOptionActivity","GeometricAsianActivity","ArithmaticAsianActivity", "GeometricBasketActivity", "ArithmaticBasketActivity" };
+	private static String Pricer[] = {"European Options","Geometric Asian Option","Arithmatic Asian Option", "Geometric Baseket Option", "Arithmatic Basket Option"};
+	private static String ActName[] = {"EuorpeanOptionActivity","GeometricAsianActivity","ArithmaticAsianActivity", "GeometricBasketActivity", "ArithmaticBasketActivity" };
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {

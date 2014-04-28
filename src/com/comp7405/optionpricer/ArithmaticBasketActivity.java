@@ -17,24 +17,21 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 	RadioGroup rgOptionType, rgMCOption;
 	TextView tvResult;
 	
-	int OptionType, Method;
-	double K,T,r,Covariance,path;
-	double[] Sigma, Spots;
+	private int OptionType;
+    private PricerMethod method;
+	private double K,T,r, rho;
+    private int path;
+	private double[] sigma, spots;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.arithmeticbasket);
-		
 		initialize();
-		
-		
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub
 		switch (group.getId()){
 		case R.id.rgOption:
 			switch(checkedId){
@@ -48,13 +45,13 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 		case R.id.rgMCOption:
 			switch(checkedId){
 				case R.id.rbStandardMC:
-					Method = 0;
+					method = PricerMethod.STANDARD;
 					break;
 				case R.id.rbControlVariate:
-					Method = 1;
+					method = PricerMethod.CONTROL_VARIATE;
 					break;
 				case R.id.rbControlVariateWithStrike:
-					Method = 2;
+					method = PricerMethod.ADJUSTED_STRIKE;
 					break;
 				}
 			break;
@@ -64,19 +61,17 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 	
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		OptionPricer PriceCalculator = new OptionPricer();
+		OptionPricer pricer = new OptionPricer();
 		
-		Spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
+		spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
 		K = Double.parseDouble(etStrikePrice.getText().toString());
 		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		Sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
+		sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
 		r = Double.parseDouble(etInterestRate.getText().toString());
-		Covariance = Double.parseDouble(etCovariance.getText().toString());
-		path = Double.parseDouble(etPath.getText().toString());
-		
-		
-		double[] Result = PriceCalculator.ArithmeticBasket(OptionType, Spots, K, T, Sigma, r, Covariance, (int) path, Method);
+		rho = Double.parseDouble(etCovariance.getText().toString());
+		path = Integer.parseInt(etPath.getText().toString());
+
+		double[] Result = pricer.basketArithmetic(OptionType, spots, K, T, sigma, r, rho, path, method);
 		tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
 
 	}

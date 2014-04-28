@@ -58,7 +58,7 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 		r = Double.parseDouble(etInterestRate.getText().toString());
 		
 		
-		tvResult.setText(Double.toString(PriceCalculator.EuropeanOptions(OptionType, S, K, T, 0, Sigma, r)));
+		tvResult.setText(Double.toString(PriceCalculator.europeanOptions(OptionType, S, K, T, 0, Sigma, r)));
 	}
 	
 	public void initialize(){

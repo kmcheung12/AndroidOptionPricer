@@ -12,14 +12,14 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class GeometricBasketActivity extends Activity implements  OnClickListener, OnCheckedChangeListener  {
-	Button bCalculate; 
-	EditText etStock1Price,etStock2Price, etStrikePrice, etTimetoMaturity, etSigma1,etSigma2, etInterestRate,etCovariance;
-	RadioGroup rgOptionType;
-	TextView tvResult;
+	private Button bCalculate;
+	private EditText etStock1Price,etStock2Price, etStrikePrice, etTimetoMaturity, etSigma1,etSigma2, etInterestRate,etCovariance;
+	private RadioGroup rgOptionType;
+	private TextView tvResult;
 	
-	int OptionType;
-	double K,T,r,Covariance;
-	double[] Sigma, Spots;
+	private int OptionType;
+	private double K,T,r, rho;
+	private double[] sigma, spots;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +52,15 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
 		// TODO Auto-generated method stub
 		OptionPricer PriceCalculator = new OptionPricer();
 		
-		Spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
+		spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
 		K = Double.parseDouble(etStrikePrice.getText().toString());
 		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		Sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
+		sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
 		r = Double.parseDouble(etInterestRate.getText().toString());
-		Covariance = Double.parseDouble(etCovariance.getText().toString());
+		rho = Double.parseDouble(etCovariance.getText().toString());
 		
 		
-		tvResult.setText(Double.toString(PriceCalculator.BasketGeometric(OptionType, Spots, K, T, Sigma, r, Covariance)));
+		tvResult.setText(Double.toString(PriceCalculator.basketGeometric(OptionType, spots, K, T, sigma, r, rho)));
 	}
 	
 	public void initialize(){
