@@ -24,9 +24,9 @@ public class MainActivity extends ListActivity {
 		
 		try{
 			
-			Class ourClass = Class.forName("com.comp7405.optionpricer."+ StartActName );
-			Intent OurIntent = new Intent(MainActivity.this, ourClass);
-			startActivity(OurIntent);
+			Class clz = Class.forName("com.comp7405.optionpricer."+ StartActName );
+			Intent intent = new Intent(MainActivity.this, clz);
+			startActivity(intent);
 			
 			}catch(ClassNotFoundException e){
 				e.printStackTrace();

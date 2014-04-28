@@ -111,7 +111,7 @@
          android:id="@+id/tvSigma"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Volitility" />
+         android:text="Volatility" />
 
      <EditText
          android:id="@+id/etSigma"

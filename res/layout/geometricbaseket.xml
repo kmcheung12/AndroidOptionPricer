@@ -141,7 +141,7 @@
          android:id="@+id/tvSigma1"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Volitility 1" />
+         android:text="Volatility 1" />
 
      <EditText
          android:id="@+id/etSigma1"
@@ -165,7 +165,7 @@
          android:id="@+id/tvSigma2"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Volitility 2" />
+         android:text="Volatility 2" />
 
      <EditText
          android:id="@+id/etSigma2"
