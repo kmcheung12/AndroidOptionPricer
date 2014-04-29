@@ -70,9 +70,12 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 		r = Double.parseDouble(etInterestRate.getText().toString());
 		rho = Double.parseDouble(etCovariance.getText().toString());
 		path = Integer.parseInt(etPath.getText().toString());
-
-		double[] Result = pricer.basketArithmetic(OptionType, spots, K, T, sigma, r, rho, path, method);
-		tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+        try {
+            double[] Result = pricer.basketArithmetic(OptionType, spots, K, T, sigma, r, rho, path, method);
+            tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 	}
 	

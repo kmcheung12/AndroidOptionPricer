@@ -54,7 +54,7 @@ public class StatisticHelper {
         double sum = 0;
         int length = data.length;
 	    for(int i=0; i < length; i++){
-           sum += Math.exp(data[i]);
+           sum += Math.log(data[i]);
 	    }
         sum /= length;
         double geoMean = Math.exp(sum);

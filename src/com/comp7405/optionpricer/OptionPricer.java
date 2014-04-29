@@ -7,6 +7,7 @@ import android.util.Log;
 import static com.comp7405.optionpricer.StatisticHelper.*;
 
 enum PricerMethod {STANDARD, CONTROL_VARIATE, ADJUSTED_STRIKE};
+enum OptionType {CALL,PUT};
 
 public class OptionPricer {
 	private Random randomGenerator = new Random();
@@ -114,7 +115,8 @@ public class OptionPricer {
 }
 	
 	public double[] basketArithmetic(double Option, double[] spots, double K, double T, double[] sigmas, double r, double rho, int path, PricerMethod method){
-		int N           = spots.length; //no. of assets
+
+        int N           = spots.length; //no. of assets
 		double[] growth = new double[N];
 		double[] stocks = new double[N];
 		double basketA  = 0;
@@ -129,8 +131,8 @@ public class OptionPricer {
             drifts[i] = Math.exp((r-0.5*sigmas[i]*sigmas[i])*T);
         }
 
-        double sigmaB   = Math.sqrt(sigmas[1] * sigmas[1] + rho * 2 * sigmas[1] * sigmas[2] + sigmas[2] * sigmas[2]) / N;
-        double muB      = r - 0.5 * (sigmas[1] * sigmas[1] + sigmas[2] * sigmas[2]) / N + 0.5 * sigmaB * sigmaB;
+        double sigmaB   = Math.sqrt(sigmas[0] * sigmas[0] + rho * 2 * sigmas[0] * sigmas[1] + sigmas[1] * sigmas[1]) / N;
+        double muB      = r - 0.5 * (sigmas[0] * sigmas[0] + sigmas[1] * sigmas[1]) / N + 0.5 * sigmaB * sigmaB;
         double forwardG = Math.exp(muB * T);
         double forwardA = Math.exp(r * T);
         double discount  = Math.exp(-r*T);
@@ -138,10 +140,14 @@ public class OptionPricer {
         double eBasketG = 0; //for adjusted strike
         double eBasketA = 0; //for adjusted strike
 
-        for (int i=0; i<N; i++) {
-            double spot = spots[i];
-            eBasketG += Math.log(spot);
-            eBasketA += spot*forwardA;
+        try {
+            for (int i=0; i<N; i++) {
+                double spot = spots[i];
+                eBasketG += Math.log(spot);
+                eBasketA += spot*forwardA;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         eBasketG = Math.exp(eBasketG / N) *forwardG;
         eBasketA = eBasketA/N;
