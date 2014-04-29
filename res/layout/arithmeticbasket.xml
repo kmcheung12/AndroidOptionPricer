@@ -16,7 +16,9 @@
 	<RadioGroup
 	    android:id="@+id/rgOption"
 	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent" >
+	    android:layout_height="fill_parent"
+        android:checkedButton="@+id/rbCall"
+            >
 
  	<RadioButton
  	    android:id="@+id/rbCall"
@@ -41,15 +43,17 @@
 
      <TextView
          android:id="@+id/tvStock1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
          android:text="Stock 1 Price" />
 
      <EditText
          android:id="@+id/etStock1Price"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="100" >
@@ -66,15 +70,17 @@
 
      <TextView
          android:id="@+id/tvStock2"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
          android:text="Stock 2 Price" />
 
      <EditText
          android:id="@+id/etStock2Price"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="2"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="100" >
@@ -91,15 +97,17 @@
 
      <TextView
          android:id="@+id/tvStrike"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
          android:text="Strike Price" />
 
      <EditText
          android:id="@+id/etStrikePrice"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="100" >
@@ -115,15 +123,17 @@
 
      <TextView
          android:id="@+id/tvTimeToMaturity"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Time to Maturity" />
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Time to Maturity (Year)" />
 
      <EditText
          android:id="@+id/etTimetoMaturity"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="1" >
@@ -139,15 +149,17 @@
 
      <TextView
          android:id="@+id/tvSigma1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Volatility 1" />
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Volatility 1 (0 - 1)" />
 
      <EditText
          android:id="@+id/etSigma1"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="0.3" >
@@ -163,15 +175,17 @@
 
      <TextView
          android:id="@+id/tvSigma2"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Volatility 2" />
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Volatility 2 (0 - 1)" />
 
      <EditText
          android:id="@+id/etSigma2"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="0.3" >
@@ -187,15 +201,17 @@
 
      <TextView
          android:id="@+id/tvInterestRate"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Interest Rate" />
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Interest Rate (0 - 1)" />
 
      <EditText
          android:id="@+id/etInterestRate"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="0.05" >
@@ -211,16 +227,18 @@
 	    android:weightSum="100">
 
      <TextView
-         android:id="@+id/tvCovariance"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Covariance" />
+         android:id="@+id/tvCorrelation"
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Correlation (0 - 1)" />
 
      <EditText
          android:id="@+id/etCovariance"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="0.1" >
@@ -237,15 +255,17 @@
 
      <TextView
          android:id="@+id/tvPath"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Path Number" />
+         android:layout_width="0dp"
+         android:layout_height="fill_parent"
+         android:layout_weight="35"
+         android:gravity="center_vertical"
+         android:text="Number of simulation" />
 
      <EditText
          android:id="@+id/etPath"
-         android:layout_width="wrap_content"
+         android:layout_width="0dp"
          android:layout_height="wrap_content"
-         android:layout_weight="1"
+         android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
          android:text="50" >
@@ -258,7 +278,9 @@
   	<RadioGroup
 	    android:id="@+id/rgMCOption"
 	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent" >
+	    android:layout_height="fill_parent"
+        android:checkedButton="@+id/rbStandardMC"
+            >
 
  	<RadioButton
  	    android:id="@+id/rbStandardMC"

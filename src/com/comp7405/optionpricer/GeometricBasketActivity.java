@@ -17,7 +17,7 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
 	private RadioGroup rgOptionType;
 	private TextView tvResult;
 	
-	private int OptionType;
+	private OptionType optionType;
 	private double K,T,r, rho;
 	private double[] sigma, spots;
 
@@ -38,10 +38,10 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
 		switch(checkedId){
 		
 		case R.id.rbCall:
-			OptionType = 1;
+			optionType = OptionType.CALL;
 			break;
 		case R.id.rbPut:
-			OptionType = -1;
+			optionType = OptionType.PUT;
 			break;
 		}
 		
@@ -49,18 +49,22 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
 	
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		OptionPricer PriceCalculator = new OptionPricer();
-		
-		spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
-		K = Double.parseDouble(etStrikePrice.getText().toString());
-		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
-		r = Double.parseDouble(etInterestRate.getText().toString());
-		rho = Double.parseDouble(etCovariance.getText().toString());
-		
-		
-		tvResult.setText(Double.toString(PriceCalculator.basketGeometric(OptionType, spots, K, T, sigma, r, rho)));
+        try {
+            OptionPricer PriceCalculator = new OptionPricer();
+
+            spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
+            K = Double.parseDouble(etStrikePrice.getText().toString());
+            T = Double.parseDouble(etTimetoMaturity.getText().toString());
+            sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
+            r = Double.parseDouble(etInterestRate.getText().toString());
+            rho = Double.parseDouble(etCovariance.getText().toString());
+
+
+            tvResult.setText(Double.toString(PriceCalculator.basketGeometric(optionType, spots, K, T, sigma, r, rho)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void initialize(){

@@ -17,7 +17,7 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 	private RadioGroup rgOptionType;
 	private TextView tvResult;
 	
-	private int OptionType;
+	private OptionType optionType;
 	private double S,K,T, sigma,r,n;
 
 	@Override
@@ -37,10 +37,10 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 		switch(checkedId){
 		
 		case R.id.rbCall:
-			OptionType = 1;
+			optionType = OptionType.CALL;
 			break;
 		case R.id.rbPut:
-			OptionType = -1;
+			optionType = OptionType.PUT;
 			break;
 		}
 		
@@ -48,18 +48,22 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 	
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		OptionPricer PriceCalculator = new OptionPricer();
-		
-		S = Double.parseDouble(etStockPrice.getText().toString());
-		K = Double.parseDouble(etStrikePrice.getText().toString());
-		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		sigma = Double.parseDouble(etSigma.getText().toString());
-		r = Double.parseDouble(etInterestRate.getText().toString());
-		n = Double.parseDouble(etObservation.getText().toString());
-		
-		
-		tvResult.setText(Double.toString(PriceCalculator.asianGeometric(OptionType, S, K, T, sigma, r, n)));
+        try {
+
+            OptionPricer PriceCalculator = new OptionPricer();
+
+            S = Double.parseDouble(etStockPrice.getText().toString());
+            K = Double.parseDouble(etStrikePrice.getText().toString());
+            T = Double.parseDouble(etTimetoMaturity.getText().toString());
+            sigma = Double.parseDouble(etSigma.getText().toString());
+            r = Double.parseDouble(etInterestRate.getText().toString());
+            n = Double.parseDouble(etObservation.getText().toString());
+
+
+            tvResult.setText(Double.toString(PriceCalculator.asianGeometric(optionType, S, K, T, sigma, r, n)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void initialize(){

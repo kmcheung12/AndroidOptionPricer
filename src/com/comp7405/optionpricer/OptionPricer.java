@@ -12,30 +12,36 @@ enum OptionType {CALL,PUT};
 public class OptionPricer {
 	private Random randomGenerator = new Random();
 
-	public double europeanOptions(double Option, double S, double K, double T, double t, double sigma, double r){
-		
+    OptionPricer(){
+        randomGenerator.setSeed(12345678); // setting fixed seed, for having fixed result
+    }
+
+	public double europeanOptions(OptionType optionType, double S, double K, double T, double t, double sigma, double r){
+        double option = optionType == OptionType.CALL ? 1.0 : -1.0;
 		double dt = T -t;
 		double d1 = (Math.log(S/K)+(r+Math.pow(sigma, 2)/2)*dt)/(sigma*Math.sqrt(dt));
 		double d2 = d1 - sigma*Math.sqrt(dt);
-		double Price = -1*Option*K*Math.exp(-r*dt)*CNDF(d2*Option) + Option* S*CNDF(d1 *Option);
+		double Price = -1*option*K*Math.exp(-r*dt)*CNDF(d2*option) + option* S*CNDF(d1 *option);
 	
 		return Price;
 		
 	}
 	
-	public static double asianGeometric(double Option, double S, double K, double T, double sigma, double r, double n){
-			  double sigmaHat = sigma * (Math.sqrt((n+1)*(2*n+1)/(6*n*n)));
-			  double muHat = (r - 0.5 * Math.pow(sigma,2)) * (n+1)/(2*n) + 0.5* Math.pow(sigmaHat,2);
-			  double d1Hat    = (Math.log(S/K) + (muHat + 0.5* Math.pow(sigmaHat, 2))*T)/ (sigmaHat*Math.sqrt(T));
-			  double d2Hat    = d1Hat - sigmaHat*Math.sqrt(T);
-			  double N1       = CNDF(Option*d1Hat);
-			  double N2       = CNDF(Option*d2Hat);
-			  double price    = Math.exp(-r*T) * (Option * S * Math.exp(muHat*T) * N1 - Option*K* N2);
-			return price;
+	public  double asianGeometric(OptionType optionType, double S, double K, double T, double sigma, double r, double n){
+        double option = optionType == OptionType.CALL ? 1.0 : -1.0;
+        double sigmaHat = sigma * (Math.sqrt((n+1)*(2*n+1)/(6*n*n)));
+        double muHat = (r - 0.5 * Math.pow(sigma,2)) * (n+1)/(2*n) + 0.5* Math.pow(sigmaHat,2);
+        double d1Hat    = (Math.log(S/K) + (muHat + 0.5* Math.pow(sigmaHat, 2))*T)/ (sigmaHat*Math.sqrt(T));
+        double d2Hat    = d1Hat - sigmaHat*Math.sqrt(T);
+        double N1       = CNDF(option*d1Hat);
+        double N2       = CNDF(option*d2Hat);
+        double price    = Math.exp(-r*T) * (option * S * Math.exp(muHat*T) * N1 - option*K* N2);
+        return price;
 	}
 
-	public double[] asianArithmetic(double Option, double S, double K, double T, double sigma, double r, int n, int path, PricerMethod method){
-		double[] stockPath = new double[n];
+	public double[] asianArithmetic(OptionType optionType , double S, double K, double T, double sigma, double r, int n, int path, PricerMethod method){
+        double option = optionType == OptionType.CALL ? 1.0 : -1.0;
+        double[] stockPath = new double[n];
 		double[] aPayoff = new double[path];
 		double[] gPayoff = new double[path];
 	
@@ -76,8 +82,8 @@ public class OptionPricer {
 		    } else {
                 adjK = K;
             }
-            aPayoff[i] = Math.exp(-r*T)* Math.max(aMean - K,0);
-            gPayoff[i] = Math.exp(-r*T)* Math.max(gMean - adjK,0);
+            aPayoff[i] = Math.exp(-r*T)* Math.max(option * (aMean - K),0);
+            gPayoff[i] = Math.exp(-r*T)* Math.max(option * (gMean - adjK),0);
         }
 		  
         if (method == PricerMethod.STANDARD){
@@ -88,7 +94,7 @@ public class OptionPricer {
 		    
 		    double covXY = getCovar(aPayoff,gPayoff);
 		    double theta = covXY/getVariance(gPayoff);
-		    double geo = asianGeometric(Option, S, adjK, T, sigma, r, n);
+		    double geo = asianGeometric(optionType, S, adjK, T, sigma, r, n);
 		    double[] Z = ControlVariateList(aPayoff, theta,geo,gPayoff);
 		    return confidenceInterval(Z);
 		  }
@@ -96,10 +102,9 @@ public class OptionPricer {
 	
 	}
 	
-	public double basketGeometric(double Option, double[] spots, double K, double T, double[] sigmas, double r, double rho){
-		double n = spots.length;
-		double S1 = spots[0];
-		double S2 = spots[1];
+	public double basketGeometric(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double rho){
+		double option = optionType == OptionType.CALL?1.0:-1.0;
+        double n = spots.length;
 		double Sigma1 = sigmas[0];
 		double Sigma2 = sigmas[1];
 		double SigmaB = Math.sqrt(rho*(Math.pow(Sigma1, 2)+2*Sigma1*Sigma2+Math.pow(Sigma2, 2)))/n;
@@ -107,15 +112,15 @@ public class OptionPricer {
 		double Bg0 = geometricMean(spots);
 		double d1Hat = (Math.log(Bg0/K) + (muB + 0.5 * Math.pow(SigmaB,2))*T)/(SigmaB*Math.sqrt(T));
 		double d2Hat = d1Hat - SigmaB*Math.sqrt(T);
-		double N1 = CNDF(Option*d1Hat);
-		double N2 = CNDF(Option*d2Hat);
-		double price = Math.exp(-r*T) * (Option*Bg0*Math.exp(muB*T)*N1- Option*K*N2);
+		double N1 = CNDF(option*d1Hat);
+		double N2 = CNDF(option*d2Hat);
+		double price = Math.exp(-r*T) * (option*Bg0*Math.exp(muB*T)*N1- option*K*N2);
 		
 		return price;
 }
 	
-	public double[] basketArithmetic(double Option, double[] spots, double K, double T, double[] sigmas, double r, double rho, int path, PricerMethod method){
-
+	public double[] basketArithmetic(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double rho, int path, PricerMethod method){
+        double option   = optionType == OptionType.CALL? 1.0:-1.0;
         int N           = spots.length; //no. of assets
 		double[] growth = new double[N];
 		double[] stocks = new double[N];
@@ -140,14 +145,10 @@ public class OptionPricer {
         double eBasketG = 0; //for adjusted strike
         double eBasketA = 0; //for adjusted strike
 
-        try {
-            for (int i=0; i<N; i++) {
-                double spot = spots[i];
-                eBasketG += Math.log(spot);
-                eBasketA += spot*forwardA;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i=0; i<N; i++) {
+            double spot = spots[i];
+            eBasketG += Math.log(spot);
+            eBasketA += spot*forwardA;
         }
         eBasketG = Math.exp(eBasketG / N) *forwardG;
         eBasketA = eBasketA/N;
@@ -175,8 +176,8 @@ public class OptionPricer {
                 adjK = K;
             }
 
-            aPayoff[i] = Math.max(basketA - K, 0) * discount;
-            gPayoff[i] = Math.max(basketG - adjK, 0) * discount;
+            aPayoff[i] = Math.max(option * (basketA - K), 0) * discount;
+            gPayoff[i] = Math.max(option * (basketG - adjK), 0) * discount;
         }
 
         switch (method) {
@@ -187,7 +188,7 @@ public class OptionPricer {
             case ADJUSTED_STRIKE:
                 double covXY = getCovar(aPayoff,gPayoff);
                 double theta = covXY/getVariance(gPayoff);
-                double geo = basketGeometric(Option, spots, K, T, sigmas, r, rho);
+                double geo = basketGeometric(optionType, spots, K, T, sigmas, r, rho);
                 double[] Z = ControlVariateList(aPayoff, theta,geo,gPayoff);
                 result = confidenceInterval(Z);
             default:

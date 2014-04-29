@@ -28,9 +28,9 @@ public class MainActivity extends ListActivity {
 			Intent intent = new Intent(MainActivity.this, clz);
 			startActivity(intent);
 			
-			}catch(ClassNotFoundException e){
-				e.printStackTrace();
-			};
+        } catch(ClassNotFoundException e){
+            e.printStackTrace();
+        };
 		
 	}
 

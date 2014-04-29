@@ -16,7 +16,7 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	private RadioGroup rgOptionType, rgMCOption;
 	private TextView tvResult;
 	
-	private int OptionType;
+	private OptionType optionType;
     private PricerMethod method;
 	private double S,K,T,Sigma,r;
     private int n, path;
@@ -39,10 +39,10 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 		case R.id.rgOption:
 			switch(checkedId){
 				case R.id.rbCall:
-					OptionType = 1;
+					optionType = OptionType.CALL;
 					break;
 				case R.id.rbPut:
-					OptionType = -1;
+					optionType = OptionType.PUT;
 					break;}
 			break;
 		case R.id.rgMCOption:
@@ -63,21 +63,23 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	
 	@Override
 	public void onClick(View arg0) {
-		OptionPricer PriceCalculator = new OptionPricer();
-		
-		S = Double.parseDouble(etStockPrice.getText().toString());
-		K = Double.parseDouble(etStrikePrice.getText().toString());
-		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		Sigma = Double.parseDouble(etSigma.getText().toString());
-		r = Double.parseDouble(etInterestRate.getText().toString());
-		n = Integer.parseInt(etObservation.getText().toString());
-		path = Integer.parseInt(etPath.getText().toString());
-		
-		double[] Result = PriceCalculator.asianArithmetic(OptionType, S, K, T, Sigma, r, n, path, method);
-		
-		//tvResult.setText(Integer.toString(method)+ Integer.toString(OptionType));
-		
-		tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+
+        try {
+            OptionPricer PriceCalculator = new OptionPricer();
+
+            S = Double.parseDouble(etStockPrice.getText().toString());
+            K = Double.parseDouble(etStrikePrice.getText().toString());
+            T = Double.parseDouble(etTimetoMaturity.getText().toString());
+            Sigma = Double.parseDouble(etSigma.getText().toString());
+            r = Double.parseDouble(etInterestRate.getText().toString());
+            n = Integer.parseInt(etObservation.getText().toString());
+            path = Integer.parseInt(etPath.getText().toString());
+            double[] Result = PriceCalculator.asianArithmetic(optionType, S, K, T, Sigma, r, n, path, method);
+            tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 	}
 	
 	public void initialize(){

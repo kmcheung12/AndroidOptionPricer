@@ -17,7 +17,7 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 	RadioGroup rgOptionType;
 	TextView tvResult;
 	
-	int OptionType;
+	OptionType optionType;
 	double S,K,T,Sigma,r;
 
 	@Override
@@ -37,10 +37,10 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 		switch(checkedId){
 		
 		case R.id.rbCall:
-			OptionType = 1;
+			optionType = OptionType.CALL;
 			break;
 		case R.id.rbPut:
-			OptionType = -1;
+			optionType = OptionType.PUT;
 			break;
 		}
 		
@@ -48,17 +48,20 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 	
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		OptionPricer PriceCalculator = new OptionPricer();
-		
-		S = Double.parseDouble(etStockPrice.getText().toString());
-		K = Double.parseDouble(etStrikePrice.getText().toString());
-		T = Double.parseDouble(etTimetoMaturity.getText().toString());
-		Sigma = Double.parseDouble(etSigma.getText().toString());
-		r = Double.parseDouble(etInterestRate.getText().toString());
-		
-		
-		tvResult.setText(Double.toString(PriceCalculator.europeanOptions(OptionType, S, K, T, 0, Sigma, r)));
+        try {
+
+            OptionPricer PriceCalculator = new OptionPricer();
+
+            S = Double.parseDouble(etStockPrice.getText().toString());
+            K = Double.parseDouble(etStrikePrice.getText().toString());
+            T = Double.parseDouble(etTimetoMaturity.getText().toString());
+            Sigma = Double.parseDouble(etSigma.getText().toString());
+            r = Double.parseDouble(etInterestRate.getText().toString());
+
+            tvResult.setText(Double.toString(PriceCalculator.europeanOptions(optionType, S, K, T, 0, Sigma, r)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
 	public void initialize(){
