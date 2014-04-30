@@ -97,7 +97,8 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 		rgMCOption = (RadioGroup) findViewById(R.id.rgMCOption);
 		rgMCOption.setOnCheckedChangeListener(this);
 		
-		
+	    onCheckedChanged(rgMCOption, rgMCOption.getCheckedRadioButtonId());
+        onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
 
 }

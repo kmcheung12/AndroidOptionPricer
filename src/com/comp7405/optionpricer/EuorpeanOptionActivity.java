@@ -75,7 +75,7 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 		tvResult = (TextView) findViewById(R.id.tvResult);
 		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
 		rgOptionType.setOnCheckedChangeListener(this);
-		
+		onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
 
 }

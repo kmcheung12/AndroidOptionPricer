@@ -28,6 +28,7 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 		setContentView(R.layout.arithmaticasian);
 		
 		initialize();
+
 		
 		
 	}
@@ -97,6 +98,8 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 		etPath = (EditText) findViewById(R.id.etPath);
 		rgMCOption = (RadioGroup) findViewById(R.id.rgMCOption);
 		rgMCOption.setOnCheckedChangeListener(this);
-		
+
+        onCheckedChanged(rgMCOption, rgMCOption.getCheckedRadioButtonId());
+        onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
 }

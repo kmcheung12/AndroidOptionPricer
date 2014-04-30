@@ -268,7 +268,7 @@
          android:layout_weight="65"
          android:ems="10"
          android:inputType="numberDecimal"
-         android:text="50" >
+         android:text="1000" >
 
          <requestFocus />
      </EditText>

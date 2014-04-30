@@ -28,7 +28,6 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 		
 		initialize();
 		
-		
 	}
 
 	@Override
@@ -59,7 +58,6 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
             r = Double.parseDouble(etInterestRate.getText().toString());
             n = Double.parseDouble(etObservation.getText().toString());
 
-
             tvResult.setText(Double.toString(PriceCalculator.asianGeometric(optionType, S, K, T, sigma, r, n)));
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,6 +76,7 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
 		rgOptionType.setOnCheckedChangeListener(this);
 		etObservation = (EditText) findViewById(R.id.etObservation);
+        onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
 
 }
