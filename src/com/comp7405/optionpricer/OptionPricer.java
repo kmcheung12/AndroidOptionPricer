@@ -75,7 +75,7 @@ public class OptionPricer {
         for ( int i = 0; i<path; i++){
             if (i%(path/20) == 0) {
                 if (listener != null) {
-                    listener.onProgessChange(i/path);
+                    listener.onProgessChange((float)i/path);
                 }
             }
             for (int j = 0; j<n; j++){

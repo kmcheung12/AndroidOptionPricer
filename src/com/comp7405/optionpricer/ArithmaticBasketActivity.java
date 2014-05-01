@@ -96,9 +96,6 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
 
             ArithmaticBasketTask task = new ArithmaticBasketTask(this, optionType, spots, K, T, sigmas, r, rhos, path, method);
                     task.execute();
-//            double[] result = pricer.basketArithmetic(optionType, spots, K, T, sigmas, r, rhos, path, method);
-//            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
-//            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

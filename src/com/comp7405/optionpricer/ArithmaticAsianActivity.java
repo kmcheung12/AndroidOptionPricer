@@ -79,9 +79,9 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
             r = Double.parseDouble(etInterestRate.getText().toString());
             n = Integer.parseInt(etObservation.getText().toString());
             path = Integer.parseInt(etPath.getText().toString());
-            double[] result = pricer.asianArithmetic(optionType, S, K, T, Sigma, r, n, path, method);
-            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
-            tvResult.setText(msg);
+            ArithmaticAsianTask task = new ArithmaticAsianTask(this,optionType, S, K, T, Sigma, r, n, path, method);
+            task.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
