@@ -2,7 +2,11 @@ package com.comp7405.optionpricer;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -89,9 +93,12 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
             r = Double.parseDouble(etInterestRate.getText().toString());
             path = Integer.parseInt(etPath.getText().toString());
 
-            double[] result = pricer.basketArithmetic(optionType, spots, K, T, sigmas, r, rhos, path, method);
-            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
-            tvResult.setText(msg);
+
+            ArithmaticBasketTask task = new ArithmaticBasketTask(this, optionType, spots, K, T, sigmas, r, rhos, path, method);
+                    task.execute();
+//            double[] result = pricer.basketArithmetic(optionType, spots, K, T, sigmas, r, rhos, path, method);
+//            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+//            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -187,5 +194,75 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    class ArithmaticBasketTask extends AsyncTask<Void, Void, double[]> implements SimulationProgessChange{
+        private final OptionType optionType;
+        private final double[] spots;
+        private final double strike;
+        private final double timeToMature;
+        private final double[] sigmas;
+        private final double r;
+        private final double[][] rhos;
+        private final int path;
+        private final PricerMethod method;
+        private final Context context;
+        private ProgressDialog dialog;
+        private Handler mHandler = new Handler();
+
+        public ArithmaticBasketTask(Context context,OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos, int path, PricerMethod method) {
+            this.context    = context;
+            this.optionType = optionType;
+            this.spots      = spots;
+            this.strike     = K;
+            this.timeToMature = T;
+            this.sigmas       = sigmas;
+            this.r              = r;
+            this.rhos           = rhos;
+            this.path           = path;
+            this.method         = method;
+
+        }
+
+        @Override
+        public void onProgessChange(float progress) {
+            if (dialog!= null) {
+                final int p = (int)(progress*100);
+                if (p > 0) {
+                    dialog.setProgress(p);
+                }
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(context);
+            dialog.setTitle("Simulating...");
+            dialog.setMessage("Please wait...");
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setProgress(0);
+            dialog.setMax(100);
+            dialog.show();
+        }
+
+        @Override
+        protected double[] doInBackground(Void... voids) {
+            OptionPricer pricer = new OptionPricer();
+            pricer.setListener(this);
+            return pricer.basketArithmetic(optionType,spots,strike,timeToMature,sigmas,r,rhos,path,method);
+        }
+
+        @Override
+        protected void onPostExecute(double[] result) {
+            dialog.dismiss();
+            tvResult = (TextView) findViewById(R.id.tvResult);
+            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+            tvResult.setText(msg);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
     }
 }

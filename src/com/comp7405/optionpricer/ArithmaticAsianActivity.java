@@ -1,7 +1,11 @@
 package com.comp7405.optionpricer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -103,4 +107,73 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
         onCheckedChanged(rgMCOption, rgMCOption.getCheckedRadioButtonId());
         onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
+    class ArithmaticAsianTask extends AsyncTask<Void, Void, double[]> implements SimulationProgessChange{
+        private final OptionType optionType;
+        private final double strike;
+        private final double timeToMature;
+        private final double r;
+        private final int path;
+        private final PricerMethod method;
+        private final Context context;
+        private final double spot;
+        private final double sigma;
+        private final int n;
+        private ProgressDialog dialog;
+        private Handler mHandler = new Handler();
+
+        public ArithmaticAsianTask(Context context,OptionType optionType, double spot, double K, double T, double sigma, double r, int n, int path, PricerMethod method) {
+            this.context    = context;
+            this.optionType = optionType;
+            this.spot       = spot;
+            this.strike     = K;
+            this.timeToMature = T;
+            this.sigma          = sigma;
+            this.r              = r;
+            this.n              = n;
+            this.path           = path;
+            this.method         = method;
+
+        }
+
+        @Override
+        public void onProgessChange(float progress) {
+            if (dialog!= null) {
+                final int p = (int)(progress*100);
+                if (p > 0) {
+                    dialog.setProgress(p);
+                }
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(context);
+            dialog.setTitle("Simulating...");
+            dialog.setMessage("Please wait...");
+            dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            dialog.setProgress(0);
+            dialog.setMax(100);
+            dialog.show();
+        }
+
+        @Override
+        protected double[] doInBackground(Void... voids) {
+            OptionPricer pricer = new OptionPricer();
+            pricer.setListener(this);
+            return pricer.asianArithmetic(optionType, spot, strike, timeToMature, sigma, r, n, path, method);
+        }
+
+        @Override
+        protected void onPostExecute(double[] result) {
+            dialog.dismiss();
+            tvResult = (TextView) findViewById(R.id.tvResult);
+            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+            tvResult.setText(msg);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+    }
 }

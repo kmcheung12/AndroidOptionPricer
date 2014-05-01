@@ -1,7 +1,6 @@
 package com.comp7405.optionpricer;
 
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 import android.util.Log;
 
@@ -13,6 +12,15 @@ enum OptionType {CALL,PUT};
 public class OptionPricer {
 	private Random randomGenerator = new Random();
 
+    private SimulationProgessChange listener;
+
+    public SimulationProgessChange getListener() {
+        return listener;
+    }
+
+    public void setListener(SimulationProgessChange listener) {
+        this.listener = listener;
+    }
     OptionPricer(){
         randomGenerator.setSeed(12345678); // setting fixed seed, for having fixed result
     }
@@ -65,7 +73,11 @@ public class OptionPricer {
             adjK = K + eAsianG - eAsianA;
         }
         for ( int i = 0; i<path; i++){
-
+            if (i%(path/20) == 0) {
+                if (listener != null) {
+                    listener.onProgessChange(i/path);
+                }
+            }
             for (int j = 0; j<n; j++){
                 growth = drift * Math.exp(sigma*Math.sqrt(dt)*randomGenerator.nextGaussian());
 
@@ -187,6 +199,11 @@ public class OptionPricer {
 
         for (int i =0; i< path; i++) {
 
+            if (i%(path/20) == 0) {
+                if (listener != null) {
+                    listener.onProgessChange((float)i/path);
+                }
+            }
             for (int j = 0; j <N ; j++) {
                 uncorrSamples[0][j] = randomGenerator.nextGaussian();
             }
