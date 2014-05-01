@@ -193,9 +193,6 @@ public class OptionPricer {
 
             try {
                 corrSamples = matrixMul(uncorrSamples, upperTriMatrix);
-                double rho = rhos[0][1];
-                double z = uncorrSamples[0][0] * rho + uncorrSamples[0][1] * Math.sqrt(1 - rho*rho);
-                double diff = z - corrSamples[0][1];
 
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
@@ -203,7 +200,6 @@ public class OptionPricer {
             double sqT = Math.sqrt(T);
             for (int j = 0; j<N; j++) {
                 growth[j] = drifts[j] * Math.exp(sigmas[j] * sqT * corrSamples[0][j]);
-
                 stocks[j] = spots[j] * growth[j];
             }
 
@@ -213,8 +209,8 @@ public class OptionPricer {
 
 
 
-            aPayoff[i] = Math.max(option * (basketA - K), 0) * discount;
-            gPayoff[i] = Math.max(option * (basketG - adjK), 0) * discount;
+            aPayoff[i] = Math.max(option * (basketA - K) *discount, 0) ;
+            gPayoff[i] = Math.max(option * (basketG - adjK) *discount, 0) ;
         }
 
         switch (method) {
@@ -225,7 +221,7 @@ public class OptionPricer {
             case ADJUSTED_STRIKE:
                 double covXY = getCovar(aPayoff,gPayoff);
                 double theta = covXY/getVariance(gPayoff);
-                double geo = basketGeometric(optionType, spots, K, T, sigmas, r, rhos);
+                double geo = basketGeometric(optionType, spots, adjK, T, sigmas, r, rhos);
                 double[] Z = ControlVariateList(aPayoff, theta,geo,gPayoff);
                 result = confidenceInterval(Z);
             default:
