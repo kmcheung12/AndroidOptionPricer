@@ -99,24 +99,36 @@ public class OptionPricer {
 		return null;
 	
 	}
-	
-	public double basketGeometric(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos){
-		double option   = optionType == OptionType.CALL?1.0:-1.0;
-        double n        = spots.length;
-        double sum      = 0;
 
+    public double geometricBasketVolatility(double[] sigmas, double[][] rhos) {
+        int n = sigmas.length;
+        double sum = 0;
         for (int i =0; i< n; i++) {
             for (int j = 0; j<n; j++) {
                 sum += rhos[i][j] * sigmas[i] * sigmas[j];
             }
         }
-        double sigmaB   = Math.sqrt(sum)/n;
+        double sigmaB = Math.sqrt(sum)/n;
+        return sigmaB;
+    }
 
-        sum = 0;
-        for (int i =0; i < n; i++) {
-            sum += sigmas[i] * sigmas[i];
+    public double geometricBasketDrift(double[] sigmas, double sigmaB, double r){
+
+        int n = sigmas.length;
+        double sum = 0;
+        for (int i =0; i< n; i++) {
+            sum +=sigmas[i] * sigmas[i];
         }
-		double muB      = r - 0.5*(sum)/n +0.5*Math.pow(sigmaB,2);
+        double muB      = r - 0.5 * (sum) / n + 0.5 * sigmaB * sigmaB;
+        return muB;
+    }
+
+
+	public double basketGeometric(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos){
+		double option   = optionType == OptionType.CALL?1.0:-1.0;
+
+        double sigmaB   = geometricBasketVolatility(sigmas, rhos);
+		double muB      = geometricBasketDrift(sigmas,sigmaB,r);
 
 		double Bg0      = geometricMean(spots);
 		double d1Hat    = (Math.log(Bg0/K) + (muB + 0.5 * Math.pow(sigmaB,2))*T)/(sigmaB*Math.sqrt(T));
@@ -145,19 +157,8 @@ public class OptionPricer {
             drifts[i] = Math.exp((r-0.5*sigmas[i]*sigmas[i])*T);
         }
 
-        double sum = 0;
-        for (int i =0; i< N; i++) {
-            for (int j = 0; j<N; j++) {
-                sum += rhos[i][j] * sigmas[i] * sigmas[j];
-            }
-        }
-        double sigmaB = Math.sqrt(sum)/N;
-
-        sum = 0;
-        for (int i =0; i< N; i++) {
-            sum +=sigmas[i] * sigmas[i];
-        }
-        double muB      = r - 0.5 * (sum) / N + 0.5 * sigmaB * sigmaB;
+        double sigmaB   = geometricBasketVolatility(sigmas, rhos);
+        double muB      = geometricBasketDrift(sigmas, sigmaB, r);
 
         double forwardG = Math.exp(muB * T);
         double forwardA = Math.exp(r * T);
