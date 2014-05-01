@@ -2,8 +2,10 @@ package com.comp7405.optionpricer;
 
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -14,8 +16,9 @@ import android.content.Intent;
 public class MainActivity extends ListActivity {
 	private static String Pricer[] = {"European Options","Geometric Asian Option","Arithmatic Asian Option", "Geometric Baseket Option", "Arithmatic Basket Option"};
 	private static String ActName[] = {"EuorpeanOptionActivity","GeometricAsianActivity","ArithmaticAsianActivity", "GeometricBasketActivity", "ArithmaticBasketActivity" };
+    private PowerManager.WakeLock mWakeLock;
 
-	@Override
+    @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
@@ -38,6 +41,9 @@ public class MainActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setListAdapter(new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, Pricer));
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();
 	}
 
 	@Override
@@ -47,4 +53,9 @@ public class MainActivity extends ListActivity {
 		return true;
 	}
 
+    @Override
+    protected void onDestroy() {
+        this.mWakeLock.release();
+        super.onDestroy();
+    }
 }

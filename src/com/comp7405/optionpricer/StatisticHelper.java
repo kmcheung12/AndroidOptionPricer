@@ -5,7 +5,79 @@ package com.comp7405.optionpricer;
  */
 public class StatisticHelper {
 	/** Supplementary methods**/
+    public static double[][] transpose(double[][] a) {
+        int r = a.length;
+        int c = a[0].length;
+        double[][] l = new double[c][r];
+        for (int i=0; i<r; i++) {
+            for (int j=0; j<r; j++) {
+               l[j][i] = a[i][j];
+            }
+        }
+        return l;
+    }
 
+    public static double[][] chol(double[][] a){
+        int m = a.length;
+        double[][] l = new double[m][m]; //automatically initialzed to 0's
+        for(int i = 0; i< m;i++){
+            for(int k = 0; k < (i+1); k++){
+                double sum = 0;
+                for(int j = 0; j < k; j++){
+                    sum += l[i][j] * l[k][j];
+                }
+                l[i][k] = (i == k) ? Math.sqrt(a[i][i] - sum) :
+                        (1.0 / l[k][k] * (a[i][k] - sum));
+            }
+        }
+        return l;
+    }
+
+    public static double[][] matrixMul(double[][] m1, double[][] m2) throws IllegalArgumentException{
+//        int m1col = m1.length;
+//        int m1row = m1[0].length;
+//
+//        int m2col = m2.length;
+//        int m2row = m2[0].length;
+//
+//        if (m1col != m2row) {
+//            String msg = String.format("Cannot perform matrix multiplication with dimensions (%d, %d) and (%d, %d)", m1row,m1col,m2row,m2col);
+//            throw new IllegalArgumentException(msg);
+//        }
+//        double[][] l = new double[m2col][m1row];
+//        for (int i =0; i< m1row; i++) {
+//            for (int j=0; j< m2col; j++) {
+//                for (int k =0; k < m1col; k ++) {
+//                    l[j][i] += m1[k][j] * m2[i][k];
+//                }
+//            }
+//        }
+        return multiplicar(m1,m2);
+    }
+
+    public static double[][] multiplicar(double[][] a, double[][] b) {
+
+        int aRows = a.length,
+                aColumns = a[0].length,
+                bRows = b.length,
+                bColumns = b[0].length;
+
+        if ( aColumns != bRows ) {
+            throw new IllegalArgumentException("A:Rows: " + aColumns + " did not match B:Columns " + bRows + ".");
+        }
+
+        double[][] resultant = new double[aRows][bColumns];
+
+        for(int i = 0; i < aRows; i++) { // aRow
+            for(int j = 0; j < bColumns; j++) { // bColumn
+                for(int k = 0; k < aColumns; k++) { // aColumn
+                    resultant[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+
+        return resultant;
+    }
 	//generating the controlVariate Matrix
 	public static double[] ControlVariateList(double[] aPayoff, double theta, double geo, double[] geoPayoff){
 		double[] Zi = new double[aPayoff.length];
