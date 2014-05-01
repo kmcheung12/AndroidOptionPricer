@@ -9,14 +9,14 @@ import android.widget.*;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class ArithmaticBasketActivity extends Activity implements  OnClickListener, OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
-	Button bCalculate;
-	EditText  etStrikePrice, etTimetoMaturity, etInterestRate,etPath;
-    RadioGroup rgOptionType, rgMCOption;
-    TextView tvResult;
+	private Button bCalculate;
+	private EditText  etStrikePrice, etTimetoMaturity, etInterestRate,etPath;
+    private RadioGroup rgOptionType, rgMCOption;
+    private TextView tvResult;
 
     private EditText[] etStockPrices , etSigmas;
-    private Spinner spinner;
     private EditText[] etRhos;
+    private Spinner spinner;
 
 	private OptionType optionType;
     private PricerMethod method;
@@ -89,11 +89,9 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
             r = Double.parseDouble(etInterestRate.getText().toString());
             path = Integer.parseInt(etPath.getText().toString());
 
-//            double[][] rhos = new double[][] {{1.0000, 0.4000, 0.4500, 0.5000}, {0.4,1,0.5,0.6}, {0.45,0.5,1,0.65}, {0.5, 0.6, 0.65, 1}};
-
-//            double[] Result = pricer.basketArithmetic(optionType, new double[]{100,100,100,100}, 120, T, new double[] {0.3,0.2,0.1,0.1}, 0.05, rhos, path, method);
-            double[] Result = pricer.basketArithmetic(optionType, spots, K, T, sigmas, r, rhos, path, method);
-            tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+            double[] result = pricer.basketArithmetic(optionType, spots, K, T, sigmas, r, rhos, path, method);
+            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

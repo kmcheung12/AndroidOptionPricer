@@ -1,267 +1,542 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-   
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-	<RadioGroup
-	    android:id="@+id/rgOption"
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-        android:checkedButton="@+id/rbCall"
-            >
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
- 	<RadioButton
- 	    android:id="@+id/rbCall"
- 	    android:layout_width="wrap_content"
- 	    android:layout_height="wrap_content"
- 	    android:layout_gravity="left"
- 	    android:layout_weight="50"
- 	    android:text="Call Option" />
-	<RadioButton
-	    android:id="@+id/rbPut"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_weight="50"
-	    android:text="Put Option" />
-	</RadioGroup>
-	
-</LinearLayout>
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            <RadioGroup
+                    android:id="@+id/rgOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:checkedButton="@+id/rbCall"
+                    >
 
-     <TextView
-         android:id="@+id/tvStock1"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Stock 1 Price" />
+                <RadioButton
+                        android:id="@+id/rbCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="50"
+                        android:text="Call Option" />
+                <RadioButton
+                        android:id="@+id/rbPut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="Put Option" />
+            </RadioGroup>
 
-     <EditText
-         android:id="@+id/etStock1Price"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="100" >
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
-         <requestFocus />
-     </EditText>
+            <TextView
+                    android:id="@+id/tvTimeToMaturity"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="35"
+                    android:gravity="center_vertical"
+                    android:text="Time to Maturity (Year)" />
 
-</LinearLayout>
+            <EditText
+                    android:id="@+id/etTimetoMaturity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="65"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="3" >
 
-  <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+                <requestFocus />
+            </EditText>
 
-     <TextView
-         android:id="@+id/tvStock2"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Stock 2 Price" />
+        </LinearLayout>
 
-     <EditText
-         android:id="@+id/etStock2Price"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="100" >
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+            <TextView
+                    android:id="@+id/tv_number_of_stock"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="35"
+                    android:layout_gravity="center_vertical"
+                    android:text="Number of stocks"/>
 
-         <requestFocus />
-     </EditText>
+            <Spinner
+                    android:id="@+id/sp_number_of_stock"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="65"/>
 
-</LinearLayout>
- 
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
 
-     <TextView
-         android:id="@+id/tvStrike"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Strike Price" />
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/ll_stock_price1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
-     <EditText
-         android:id="@+id/etStrikePrice"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="100" >
+            <TextView
+                    android:id="@+id/tvStock1"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Stock 1 Price" />
 
-         <requestFocus />
-     </EditText>
+            <EditText
+                    android:id="@+id/etStock1Price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
 
-</LinearLayout>
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            </EditText>
 
-     <TextView
-         android:id="@+id/tvTimeToMaturity"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Time to Maturity (Year)" />
+            <TextView
+                    android:id="@+id/tvSigma1"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Volatility 1\n (0 - 1)" />
 
-     <EditText
-         android:id="@+id/etTimetoMaturity"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="1" >
+            <EditText
+                    android:id="@+id/etSigma1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.3" >
 
-         <requestFocus />
-     </EditText>
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/ll_stock_price2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
-</LinearLayout>
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            <TextView
+                    android:id="@+id/tvStock2"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Stock 2 Price" />
 
-     <TextView
-         android:id="@+id/tvSigma1"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Volatility 1 (0 - 1)" />
+            <EditText
+                    android:id="@+id/etStock2Price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
 
-     <EditText
-         android:id="@+id/etSigma1"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="0.3" >
+            </EditText>
 
-         <requestFocus />
-     </EditText>
+            <TextView
+                    android:id="@+id/tvSigma2"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Volatility 2\n (0 - 1)" />
 
-</LinearLayout>
-<LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            <EditText
+                    android:id="@+id/etSigma2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.3" >
 
-     <TextView
-         android:id="@+id/tvSigma2"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Volatility 2 (0 - 1)" />
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/ll_stock_price3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
-     <EditText
-         android:id="@+id/etSigma2"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="0.3" >
+            <TextView
+                    android:id="@+id/tvStock3"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Stock 3 Price" />
 
-         <requestFocus />
-     </EditText>
+            <EditText
+                    android:id="@+id/etStock3Price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
 
-</LinearLayout>
- <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            </EditText>
 
-     <TextView
-         android:id="@+id/tvInterestRate"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Interest Rate (0 - 1)" />
+            <TextView
+                    android:id="@+id/tvSigma3"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Volatility 3\n (0 - 1)" />
 
-     <EditText
-         android:id="@+id/etInterestRate"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="0.05" >
+            <EditText
+                    android:id="@+id/etSigma3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.3" >
 
-         <requestFocus />
-     </EditText>
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/ll_stock_price4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
-</LinearLayout>
+            <TextView
+                    android:id="@+id/tvStock4"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Stock 4 Price" />
 
-  <LinearLayout
-     android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:weightSum="100">
+            <EditText
+                    android:id="@+id/etStock4Price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
 
-     <TextView
-         android:id="@+id/tvCorrelation"
-         android:layout_width="0dp"
-         android:layout_height="fill_parent"
-         android:layout_weight="35"
-         android:gravity="center_vertical"
-         android:text="Correlation (0 - 1)" />
+            </EditText>
 
-     <EditText
-         android:id="@+id/etCovariance"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="65"
-         android:ems="10"
-         android:inputType="numberDecimal"
-         android:text="0.1" >
+            <TextView
+                    android:id="@+id/tvSigma4"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Volatility 4\n (0 - 1)" />
 
-         <requestFocus />
-     </EditText>
+            <EditText
+                    android:id="@+id/etSigma4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.3" >
 
-</LinearLayout>
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/ll_stock_price5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
 
- <TextView
-     android:id="@+id/tvResult"
-     android:layout_gravity="center"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:text="The option Vaule is: "
-     android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                    android:id="@+id/tvStock5"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Stock 5 Price" />
 
- <Button
-     android:id="@+id/bCalculate"
-     android:layout_gravity="center"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:text="Calculate" />
+            <EditText
+                    android:id="@+id/etStock5Price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
 
-</LinearLayout>
+            </EditText>
+
+            <TextView
+                    android:id="@+id/tvSigma5"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="25"
+                    android:gravity="center_vertical"
+                    android:text="Volatility 5\n (0 - 1)" />
+
+            <EditText
+                    android:id="@+id/etSigma5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.3" >
+
+            </EditText>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+
+            <TextView
+                    android:id="@+id/tvStrike"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="35"
+                    android:gravity="center_vertical"
+                    android:text="Strike Price" />
+
+            <EditText
+                    android:id="@+id/etStrikePrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="65"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="100" >
+
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+
+            <TextView
+                    android:id="@+id/tvInterestRate"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="35"
+                    android:gravity="center_vertical"
+                    android:text="Interest Rate (0 - 1)" />
+
+            <EditText
+                    android:id="@+id/etInterestRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="65"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:text="0.05" >
+
+            </EditText>
+
+        </LinearLayout>
+
+        >
+
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+
+            <TextView
+                    android:id="@+id/tvCorrelation"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="30"
+                    android:gravity="center_vertical"
+                    android:text="Correlation Matrix\n (0 - 1)" />
+
+            <TableLayout
+                    android:id="@+id/table_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="70">
+                <TableRow android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:id="@+id/table_row_title">
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="S1"
+                            android:id="@+id/table_label_1" android:gravity="center"/>
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="S2"
+                            android:id="@+id/table_label_2" android:gravity="center"/>
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="S3"
+                            android:id="@+id/table_label_3" android:gravity="center"/>
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="S4"
+                            android:id="@+id/table_label_4" android:gravity="center"/>
+
+                    <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="S5"
+                            android:id="@+id/table_label_5" android:gravity="center"/>
+                </TableRow>
+                <TableRow android:id="@+id/table_row1"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:padding="1dip" >
+
+                    <EditText
+                            android:id="@+id/rho_1_1"
+                            android:inputType="numberDecimal"
+                            android:text="1.0" >
+                    </EditText>
+
+                </TableRow>
+
+                <TableRow android:id="@+id/table_row2"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:padding="1dip" >
+
+                    <EditText
+                            android:id="@+id/rho_2_1"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_2_2"
+                            android:inputType="numberDecimal"
+                            android:text="1.0" >
+                    </EditText>
+
+                </TableRow>
+                <TableRow android:id="@+id/table_row3"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:padding="1dip" >
+
+                    <EditText
+                            android:id="@+id/rho_3_1"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_3_2"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_3_3"
+                            android:inputType="numberDecimal"
+                            android:text="1.0" >
+                    </EditText>
+
+                </TableRow>
+
+                <TableRow android:id="@+id/table_row4"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:padding="1dip" >
+
+                    <EditText
+                            android:id="@+id/rho_4_1"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_4_2"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_4_3"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_4_4"
+                            android:inputType="numberDecimal"
+                            android:text="1.0" >
+                    </EditText>
+
+                </TableRow>
+
+                <TableRow android:id="@+id/table_row5"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:padding="1dip" >
+
+                    <EditText
+                            android:id="@+id/rho_5_1"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_5_2"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_5_3"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_5_4"
+                            android:inputType="numberDecimal"
+                            android:text="0.1" >
+                    </EditText>
+                    <EditText
+                            android:id="@+id/rho_5_5"
+                            android:inputType="numberDecimal"
+                            android:text="1.0" >
+                    </EditText>
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+        <TextView
+                android:id="@+id/tvResult"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Option price:"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+                android:id="@+id/bCalculate"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calculate" />
+
+    </LinearLayout>
 </ScrollView>

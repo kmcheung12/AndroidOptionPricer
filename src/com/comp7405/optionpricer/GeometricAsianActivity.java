@@ -49,7 +49,7 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 	public void onClick(View arg0) {
         try {
 
-            OptionPricer PriceCalculator = new OptionPricer();
+            OptionPricer pricer = new OptionPricer();
 
             S = Double.parseDouble(etStockPrice.getText().toString());
             K = Double.parseDouble(etStrikePrice.getText().toString());
@@ -58,7 +58,9 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
             r = Double.parseDouble(etInterestRate.getText().toString());
             n = Double.parseDouble(etObservation.getText().toString());
 
-            tvResult.setText(Double.toString(PriceCalculator.asianGeometric(optionType, S, K, T, sigma, r, n)));
+            double result = pricer.asianGeometric(optionType, S, K, T, sigma, r, n);
+            String msg = String.format("Option price: %.4f", result);
+            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

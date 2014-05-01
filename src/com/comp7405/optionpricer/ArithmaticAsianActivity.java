@@ -66,7 +66,7 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	public void onClick(View arg0) {
 
         try {
-            OptionPricer PriceCalculator = new OptionPricer();
+            OptionPricer pricer = new OptionPricer();
 
             S = Double.parseDouble(etStockPrice.getText().toString());
             K = Double.parseDouble(etStrikePrice.getText().toString());
@@ -75,8 +75,9 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
             r = Double.parseDouble(etInterestRate.getText().toString());
             n = Integer.parseInt(etObservation.getText().toString());
             path = Integer.parseInt(etPath.getText().toString());
-            double[] Result = PriceCalculator.asianArithmetic(optionType, S, K, T, Sigma, r, n, path, method);
-            tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
+            double[] result = pricer.asianArithmetic(optionType, S, K, T, Sigma, r, n, path, method);
+            String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

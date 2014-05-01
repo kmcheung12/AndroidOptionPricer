@@ -50,7 +50,7 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 	public void onClick(View arg0) {
         try {
 
-            OptionPricer PriceCalculator = new OptionPricer();
+            OptionPricer pricer = new OptionPricer();
 
             S = Double.parseDouble(etStockPrice.getText().toString());
             K = Double.parseDouble(etStrikePrice.getText().toString());
@@ -58,7 +58,9 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
             Sigma = Double.parseDouble(etSigma.getText().toString());
             r = Double.parseDouble(etInterestRate.getText().toString());
 
-            tvResult.setText(Double.toString(PriceCalculator.europeanOptions(optionType, S, K, T, 0, Sigma, r)));
+            double result = pricer.europeanOptions(optionType, S, K, T, 0, Sigma, r);
+            String msg = String.format("Option price: %.4f", result);
+            tvResult.setText(msg);
         } catch (Exception e) {
             e.printStackTrace();
         }

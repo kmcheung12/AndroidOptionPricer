@@ -80,7 +80,6 @@
          android:ems="10"
          android:inputType="numberDecimal" >
 
-         <requestFocus />
      </EditText>
 
 </LinearLayout>
@@ -106,7 +105,6 @@
          android:ems="10"
          android:inputType="numberDecimal" >
 
-         <requestFocus />
      </EditText>
 
 </LinearLayout>
@@ -132,7 +130,6 @@
          android:ems="10"
          android:inputType="numberDecimal" >
 
-         <requestFocus />
      </EditText>
 
 </LinearLayout>
@@ -159,7 +156,6 @@
          android:ems="10"
          android:inputType="numberDecimal" >
 
-         <requestFocus />
      </EditText>
 
 </LinearLayout>
@@ -169,7 +165,7 @@
      android:layout_gravity="center"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:text="The option Vaule is: "
+     android:text="Option price:"
      android:textAppearance="?android:attr/textAppearanceLarge" />
 
  <Button
