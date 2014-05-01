@@ -11,6 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import static com.comp7405.optionpricer.StatisticHelper.matrixMul;
+
 public class ArithmaticBasketActivity extends Activity implements  OnClickListener, OnCheckedChangeListener  {
 	Button bCalculate; 
 	EditText etStock1Price,etStock2Price, etStrikePrice, etTimetoMaturity, etSigma1,etSigma2, etInterestRate,etCovariance,etPath;
@@ -64,6 +66,11 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
         try {
             OptionPricer pricer = new OptionPricer();
 
+            double[][] matA = {{1,2},{3,4}};
+            double[][] result = matrixMul(matA,matA);
+            System.out.print(result);
+
+
             spots = new double[] {Double.parseDouble(etStock1Price.getText().toString()),Double.parseDouble(etStock2Price.getText().toString())};
             K = Double.parseDouble(etStrikePrice.getText().toString());
             T = Double.parseDouble(etTimetoMaturity.getText().toString());
@@ -71,14 +78,14 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
             r = Double.parseDouble(etInterestRate.getText().toString());
             rho = Double.parseDouble(etCovariance.getText().toString());
             path = Integer.parseInt(etPath.getText().toString());
-            double[] Result = pricer.basketArithmetic(optionType, spots, K, T, sigma, r, rho, path, method);
+            double[] Result = pricer.basketArithmetic(optionType, spots, K, T, sigma, r, new double[][]{{1,rho},{rho,1}}, path, method);
             tvResult.setText("Option Price is " + Double.toString(Result[0]) + " With 95% confidence interval at " +Double.toString(Result[1]) + " and "  +Double.toString(Result[2]) );
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 	}
-	
+
 	public void initialize(){
 		bCalculate = (Button) findViewById(R.id.bCalculate);
 		bCalculate.setOnClickListener(this);

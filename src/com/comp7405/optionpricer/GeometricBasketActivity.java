@@ -58,7 +58,7 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
             sigma =  new double[]{Double.parseDouble(etSigma1.getText().toString()),Double.parseDouble(etSigma2.getText().toString())};
             r = Double.parseDouble(etInterestRate.getText().toString());
             rho = Double.parseDouble(etCovariance.getText().toString());
-            tvResult.setText(Double.toString(PriceCalculator.basketGeometric(optionType, spots, K, T, sigma, r, rho)));
+            tvResult.setText(Double.toString(PriceCalculator.basketGeometric(optionType, spots, K, T, sigma, r, new double[][]{{1,rho},{rho, 1}})));
 
         } catch (Exception e) {
             e.printStackTrace();
