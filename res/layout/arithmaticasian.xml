@@ -97,7 +97,7 @@
          android:layout_height="fill_parent"
          android:layout_weight="35"
          android:gravity="center_vertical"
-         android:text="Time to Maturity (Year)" />
+         android:text="Time to Maturity\n (Year)" />
 
      <EditText
          android:id="@+id/etTimetoMaturity"
@@ -122,7 +122,7 @@
          android:layout_height="fill_parent"
          android:layout_weight="35"
          android:gravity="center_vertical"
-         android:text="Volatility (0 - 1)"
+         android:text="Volatility\n (0 - 1)"
              />
 
      <EditText
@@ -149,7 +149,7 @@
          android:layout_height="fill_parent"
          android:layout_weight="35"
          android:gravity="center_vertical"
-         android:text="Interest Rate (0 - 1)" />
+         android:text="Interest Rate\n (0 - 1)" />
 
      <EditText
          android:id="@+id/etInterestRate"
