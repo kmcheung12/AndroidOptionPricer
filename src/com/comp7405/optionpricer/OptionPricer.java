@@ -25,15 +25,15 @@ public class OptionPricer {
         randomGenerator.setSeed(12345678); // setting fixed seed, for having fixed result
     }
 
-	public double europeanOptions(OptionType optionType, double S, double K, double T, double t, double sigma, double r){
-        if (optionType == null || S < 0 || K < 0 || T < 0 || t < 0 || sigma >1 || r >1) {
+	public double europeanOptions(OptionType optionType, double spot, double strike, double timeToMature, double t, double sigma, double interestRate){
+        if (optionType == null || spot < 0 || strike < 0 || timeToMature < 0 || t < 0 || sigma >1 || interestRate >1) {
             throw new IllegalArgumentException("Invalid input");
         }
         double option   = optionType == OptionType.CALL ? 1.0 : -1.0;
-		double dt       = T -t;
-		double d1       = (Math.log(S/K)+(r+Math.pow(sigma, 2)/2)*dt)/(sigma*Math.sqrt(dt));
+		double dt       = timeToMature -t;
+		double d1       = (Math.log(spot/strike)+(interestRate+Math.pow(sigma, 2)/2)*dt)/(sigma*Math.sqrt(dt));
 		double d2       = d1 - sigma*Math.sqrt(dt);
-		double Price    = -1*option*K*Math.exp(-r*dt)*CNDF(d2*option) + option* S*CNDF(d1 *option);
+		double Price    = -1*option*strike*Math.exp(-interestRate*dt)*CNDF(d2*option) + option* spot*CNDF(d1 *option);
 	
 		return Price;
 		
