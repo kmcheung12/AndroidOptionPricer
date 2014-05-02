@@ -70,8 +70,6 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	public void onClick(View arg0) {
 
         try {
-            OptionPricer pricer = new OptionPricer();
-
             S = Double.parseDouble(etStockPrice.getText().toString());
             K = Double.parseDouble(etStrikePrice.getText().toString());
             T = Double.parseDouble(etTimetoMaturity.getText().toString());
@@ -93,25 +91,25 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 		bCalculate.setOnClickListener(this);
 
 		etStockPrice = (EditText) findViewById(R.id.etStockPrice);
-        etStockPrice.addTextChangedListener(new EditTextDoubleValidator(etStockPrice));
+        new EditTextDoubleValidator(etStockPrice);
 
 		etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
-        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+        new EditTextDoubleValidator(etStrikePrice);
 
 		etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
-        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+        new EditTextDoubleValidator(etTimetoMaturity);
 
 		etSigma= (EditText) findViewById(R.id.etSigma);
-        etSigma.addTextChangedListener(new EditTextFractionValidator(etSigma));
+        new EditTextFractionValidator(etSigma);
 
 		etInterestRate= (EditText) findViewById(R.id.etInterestRate);
-        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+        new EditTextFractionValidator(etInterestRate);
 
         etObservation = (EditText) findViewById(R.id.etObservation);
-        etObservation.addTextChangedListener(new EditTextDoubleValidator(etObservation));
+        new EditTextDoubleValidator(etObservation);
 
         etPath = (EditText) findViewById(R.id.etPath);
-        etPath.addTextChangedListener(new EditTextDoubleValidator(etPath ));
+        new EditTextDoubleValidator(etPath);
 
         tvResult = (TextView) findViewById(R.id.tvResult);
         rgOptionType = (RadioGroup) findViewById(R.id.rgOption);

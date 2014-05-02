@@ -105,28 +105,28 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
         etRhos        = new EditText[rhoIds.length];
         for (int i=0; i<rhoIds.length; i++) {
             etRhos[i] = (EditText) findViewById(rhoIds[i]);
-            etRhos[i].addTextChangedListener(new EditTextFractionValidator(etRhos[i]));
+            new EditTextFractionValidator(etRhos[i]);
         }
 
         for (int i=0; i<spotIds.length; i++) {
             etStockPrices[i] = (EditText) findViewById(spotIds[i]);
             etSigmas[i] = (EditText) findViewById(sigmaIds[i]);
 
-            etStockPrices[i].addTextChangedListener(new EditTextDoubleValidator(etStockPrices[i]));
-            etSigmas[i].addTextChangedListener(new EditTextDoubleValidator(etSigmas[i]));
+            new EditTextDoubleValidator(etStockPrices[i]);
+            new EditTextDoubleValidator(etSigmas[i]);
         }
 
         bCalculate = (Button) findViewById(R.id.bCalculate);
 		bCalculate.setOnClickListener(this);
 
 		etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
-        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+        new EditTextDoubleValidator(etStrikePrice);
 
 		etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
-        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+        new EditTextDoubleValidator(etTimetoMaturity);
 
 		etInterestRate= (EditText) findViewById(R.id.etInterestRate);
-        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+        new EditTextFractionValidator(etInterestRate);
 
 		tvResult = (TextView) findViewById(R.id.tvResult);
 		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);

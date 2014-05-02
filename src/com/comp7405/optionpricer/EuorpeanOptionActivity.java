@@ -71,19 +71,19 @@ public class EuorpeanOptionActivity extends Activity implements  OnClickListener
 		bCalculate.setOnClickListener(this);
 
 		etStockPrice = (EditText) findViewById(R.id.etStockPrice);
-        etStockPrice.addTextChangedListener(new EditTextDoubleValidator(etStockPrice ));
+        new EditTextDoubleValidator(etStockPrice);
 
 		etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
-        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+        new EditTextDoubleValidator(etStrikePrice);
 
 		etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
-        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+        new EditTextDoubleValidator(etTimetoMaturity);
 
 		etSigma= (EditText) findViewById(R.id.etSigma);
-        etSigma.addTextChangedListener(new EditTextFractionValidator(etSigma));
+        new EditTextFractionValidator(etSigma);
 
 		etInterestRate= (EditText) findViewById(R.id.etInterestRate);
-        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+        new EditTextFractionValidator(etInterestRate);
 
 		tvResult = (TextView) findViewById(R.id.tvResult);
 		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);

@@ -72,7 +72,6 @@ public class ArithmaticBasketActivity extends Activity implements
 	@Override
 	public void onClick(View arg0) {
         try {
-            OptionPricer pricer = new OptionPricer();
             spots = new double[n];
             sigmas = new double[n];
             for (int i=0; i<n; i++) {
@@ -134,37 +133,33 @@ public class ArithmaticBasketActivity extends Activity implements
         }
 
         for (int i=0; i<spotIds.length; i++) {
-            EditText etStockPrice = (EditText) findViewById(spotIds[i]);
-            etStockPrices[i] = etStockPrice;
-            etStockPrices[i].addTextChangedListener(new EditTextDoubleValidator(etStockPrice));
+            etStockPrices[i] = (EditText) findViewById(spotIds[i]);
+            new EditTextDoubleValidator(etStockPrices[i]);
 
-            EditText etSigma = (EditText) findViewById(sigmaIds[i]);
-            etSigmas[i] = etSigma;
-            etSigmas[i].addTextChangedListener(new EditTextFractionValidator(etSigma));
+            etSigmas[i] = (EditText) findViewById(sigmaIds[i]);
+            new EditTextFractionValidator(etSigmas[i]);
         }
 
         bCalculate = (Button) findViewById(R.id.bCalculate);
         bCalculate.setOnClickListener(this);
 
         etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
-        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+        new EditTextDoubleValidator(etStrikePrice);
 
         etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
-        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+        new EditTextDoubleValidator(etTimetoMaturity);
 
         etInterestRate= (EditText) findViewById(R.id.etInterestRate);
-        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+        new EditTextFractionValidator(etInterestRate);
 
         etPath = (EditText) findViewById(R.id.etPath);
-        etPath.addTextChangedListener(new EditTextDoubleValidator(etPath));
+        new EditTextDoubleValidator(etPath);
 
         tvResult = (TextView) findViewById(R.id.tvResult);
         rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
         rgOptionType.setOnCheckedChangeListener(this);
         rgMCOption = (RadioGroup) findViewById(R.id.rgMCOption);
         rgMCOption.setOnCheckedChangeListener(this);
-
-
 
 	    onCheckedChanged(rgMCOption, rgMCOption.getCheckedRadioButtonId());
         onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
