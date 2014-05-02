@@ -39,48 +39,61 @@ public class OptionPricer {
 		
 	}
 	
-	public  double asianGeometric(OptionType optionType, double S, double K, double T, double sigma, double r, double n){
-        if (optionType == null || S < 0|| K < 0 || T <0|| sigma >1 || r > 1 || n < 0) {
+	public  double asianGeometric(OptionType optionType, double spot, double strike, double timeToMature, double sigma, double interestRate, double observation){
+        if (optionType == null || spot < 0|| strike < 0 || timeToMature <0|| sigma >1 || interestRate > 1 || observation < 0) {
             throw new IllegalArgumentException("Invalid input");
         }
         double option   = optionType == OptionType.CALL ? 1.0 : -1.0;
-        double sigmaHat = sigma * (Math.sqrt((n+1)*(2*n+1)/(6*n*n)));
-        double muHat    = (r - 0.5 * Math.pow(sigma,2)) * (n+1)/(2*n) + 0.5* Math.pow(sigmaHat,2);
-        double d1Hat    = (Math.log(S/K) + (muHat + 0.5* Math.pow(sigmaHat, 2))*T)/ (sigmaHat*Math.sqrt(T));
-        double d2Hat    = d1Hat - sigmaHat*Math.sqrt(T);
+        double sigmaHat = sigma * (Math.sqrt((observation+1)*(2*observation+1)/(6*observation*observation)));
+        double muHat    = (interestRate - 0.5 * Math.pow(sigma,2)) * (observation+1)/(2*observation) + 0.5* Math.pow(sigmaHat,2);
+        double d1Hat    = (Math.log(spot/strike) + (muHat + 0.5* Math.pow(sigmaHat, 2))*timeToMature)/ (sigmaHat*Math.sqrt(timeToMature));
+        double d2Hat    = d1Hat - sigmaHat*Math.sqrt(timeToMature);
         double N1       = CNDF(option*d1Hat);
         double N2       = CNDF(option*d2Hat);
-        double price    = Math.exp(-r*T) * (option * S * Math.exp(muHat*T) * N1 - option*K* N2);
+        double price    = Math.exp(-interestRate*timeToMature) * (option * spot * Math.exp(muHat*timeToMature) * N1 - option*strike* N2);
         return price;
 	}
 
-	public double[] asianArithmetic(OptionType optionType , double S, double K, double T, double sigma, double r, int n, int path, PricerMethod method){
-        if (optionType ==null|| S < 0 || K < 0 || T <0 || sigma >1 ||r >1 || n <0 ||path <0||method == null) {
+/*
+Parameters:
+OptionType optionType   - enum defines pricing of PUT or CALL option
+double spot             - spot price of asset
+double strike           - strike price of option
+double timeToMature     - time to maturity of option
+double sigma            - volatility of asset
+double interestRate     - risk free interest rate
+int observation         - number of time for observation till time to mature
+int path                - number of simulations
+PricerMethod method     - enum defining simulation method. One of the follow value:STANDARD, CONTROL_VARIATE or ADJUSTED_STRIKE
+*/
+
+	public double[] asianArithmetic(OptionType optionType , double spot, double strike, double timeToMature, double sigma, double interestRate, int observation, int path, PricerMethod method){
+        if (optionType ==null|| spot < 0 || strike < 0 || timeToMature <0 || sigma >1 ||interestRate >1 || observation <0 ||path <0||method == null) {
             throw new IllegalArgumentException("Invalid input");
         }
 
         double option       = optionType == OptionType.CALL ? 1.0 : -1.0;
-        double[] stockPath  = new double[n];
+        double[] stockPath  = new double[observation];
 		double[] aPayoff    = new double[path];
 		double[] gPayoff    = new double[path];
 	
-		double dt           = T/n;
-		double drift        = Math.exp((r-0.5*Math.pow(sigma,2))*dt);
+		double dt           = timeToMature/observation;
+		double drift        = Math.exp((interestRate-0.5*Math.pow(sigma,2))*dt);
         double growth       = 0;
 
-        double sigmaHat     = sigma * (Math.sqrt((n + 1) * (2 * n + 1) / ((float)6 * n * n)));
-        double muHat        = (r - 0.5 * sigma * sigma) * (n + 1) / (2 * n) + 0.5 * sigmaHat * sigmaHat;
+        double sigmaHat     = sigma * (Math.sqrt((observation + 1) * (2 * observation + 1) / ((float)6 * observation * observation)));
+        double muHat        = (interestRate - 0.5 * sigma * sigma) * (observation + 1) / (2 * observation) + 0.5 * sigmaHat * sigmaHat;
 
         double eAsianA      = 0;
         //E_AsianA = S* sum(exp([1:n]*dt*r))/n;
-        for (int i =1; i<= n; i++) {
-            eAsianA += Math.exp(i*dt*r);
+        for (int i =1; i<= observation; i++) {
+            eAsianA += Math.exp(i*dt*interestRate);
         }
-        eAsianA             = eAsianA*S/n;
-        double eAsianG      = S * Math.exp(muHat * T);
-        double adjK         = K;
+        eAsianA             = eAsianA*spot/observation;
+        double eAsianG      = spot * Math.exp(muHat * timeToMature);
+        double adjK         = strike;
         if (method == PricerMethod.ADJUSTED_STRIKE){
-            adjK = K + eAsianG - eAsianA;
+            adjK = strike + eAsianG - eAsianA;
         }
         for ( int i = 0; i<path; i++){
             if (path > 20 && i%(path/20) == 0) {
@@ -88,11 +101,11 @@ public class OptionPricer {
                     listener.onProgessChange((float)i/path);
                 }
             }
-            for (int j = 0; j<n; j++){
+            for (int j = 0; j<observation; j++){
                 growth = drift * Math.exp(sigma*Math.sqrt(dt)*randomGenerator.nextGaussian());
 
                 if (j == 0){
-                  stockPath [0] = S * growth;
+                  stockPath [0] = spot * growth;
               }else{
                   stockPath[j] = stockPath[j-1] * growth;
               }
@@ -102,8 +115,8 @@ public class OptionPricer {
             double aMean = arithmeticMean(stockPath);
             double gMean = geometricMean(stockPath);
 
-            aPayoff[i] = Math.exp(-r*T)* Math.max(option * (aMean - K),0);
-            gPayoff[i] = Math.exp(-r*T)* Math.max(option * (gMean - adjK),0);
+            aPayoff[i] = Math.exp(-interestRate*timeToMature)* Math.max(option * (aMean - strike),0);
+            gPayoff[i] = Math.exp(-interestRate*timeToMature)* Math.max(option * (gMean - adjK),0);
         }
 		  
         if (method == PricerMethod.STANDARD){
@@ -114,7 +127,7 @@ public class OptionPricer {
 		    
 		    double covXY = getCovar(aPayoff,gPayoff);
 		    double theta = covXY/getVariance(gPayoff);
-		    double geo = asianGeometric(optionType, S, adjK, T, sigma, r, n);
+		    double geo = asianGeometric(optionType, spot, adjK, timeToMature, sigma, interestRate, observation);
 		    double[] Z = ControlVariateList(aPayoff, theta,geo,gPayoff);
 		    return confidenceInterval(Z);
 		  }
@@ -145,29 +158,40 @@ public class OptionPricer {
         return muB;
     }
 
-
-	public double basketGeometric(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos){
-		if (optionType == null || spots == null || K < 0 ||T < 0|| sigmas ==null || r >1|| rhos == null) {
+/*
+Parameters:
+OptionType optionType   - enum defines pricing of PUT or CALL option
+double[] spots          - array of spot prices of asset
+double strike           - strike price of option
+double timeToMature     - time to maturity of option
+double[] sigma          - array volatilities of asset
+double interestRate     - risk free interest rate
+double[][] rhos         - Correlation matix for generating correlated random numbers from uncorrelation random numbers, with the help of cholsky decomposition
+int path                - number of simulations
+PricerMethod method     - enum defining simulation method. One of the follow value:STANDARD, CONTROL_VARIATE or ADJUSTED_STRIKE
+*/
+	public double basketGeometric(OptionType optionType, double[] spots, double strike, double timeToMature, double[] sigmas, double interestRate, double[][] rhos){
+		if (optionType == null || spots == null || strike < 0 ||timeToMature < 0|| sigmas ==null || interestRate >1|| rhos == null) {
             throw new IllegalArgumentException("Invalid inputs");
         }
 
         double option   = optionType == OptionType.CALL?1.0:-1.0;
 
         double sigmaB   = geometricBasketVolatility(sigmas, rhos);
-		double muB      = geometricBasketDrift(sigmas,sigmaB,r);
+		double muB      = geometricBasketDrift(sigmas,sigmaB,interestRate);
 
 		double Bg0      = geometricMean(spots);
-		double d1Hat    = (Math.log(Bg0/K) + (muB + 0.5 * Math.pow(sigmaB,2))*T)/(sigmaB*Math.sqrt(T));
-		double d2Hat    = d1Hat - sigmaB*Math.sqrt(T);
+		double d1Hat    = (Math.log(Bg0/strike) + (muB + 0.5 * Math.pow(sigmaB,2))*timeToMature)/(sigmaB*Math.sqrt(timeToMature));
+		double d2Hat    = d1Hat - sigmaB*Math.sqrt(timeToMature);
 		double N1       = CNDF(option*d1Hat);
 		double N2       = CNDF(option*d2Hat);
-		double price    = Math.exp(-r*T) * (option*Bg0*Math.exp(muB*T)*N1- option*K*N2);
+		double price    = Math.exp(-interestRate*timeToMature) * (option*Bg0*Math.exp(muB*timeToMature)*N1- option*strike*N2);
 		
 		return price;
 }
 	
-	public double[] basketArithmetic(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos, int path, PricerMethod method){
-        if (optionType == null || spots == null || K < 0 || T < 0 || sigmas == null || r > 1 || rhos == null || path <0 || method == null) {
+	public double[] basketArithmetic(OptionType optionType, double[] spots, double strike, double timeToMature, double[] sigmas, double r, double[][] rhos, int path, PricerMethod method){
+        if (optionType == null || spots == null || strike < 0 || timeToMature < 0 || sigmas == null || r > 1 || rhos == null || path <0 || method == null) {
             throw new IllegalArgumentException("Invalid input");
         }
 
@@ -185,15 +209,15 @@ public class OptionPricer {
 
         double[] drifts  = new double[N];
         for (int i =0; i< N; i++) {
-            drifts[i] = Math.exp((r-0.5*sigmas[i]*sigmas[i])*T);
+            drifts[i] = Math.exp((r-0.5*sigmas[i]*sigmas[i])*timeToMature);
         }
 
         double sigmaB   = geometricBasketVolatility(sigmas, rhos);
         double muB      = geometricBasketDrift(sigmas, sigmaB, r);
 
-        double forwardG = Math.exp(muB * T);
-        double forwardA = Math.exp(r * T);
-        double discount  = Math.exp(-r*T);
+        double forwardG = Math.exp(muB * timeToMature);
+        double forwardA = Math.exp(r * timeToMature);
+        double discount  = Math.exp(-r*timeToMature);
 
         double eBasketG = 0; //for adjusted strike
         double eBasketA = 0; //for adjusted strike
@@ -211,9 +235,9 @@ public class OptionPricer {
         double[][] uncorrSamples = new double[1][N];
         double[][] corrSamples = new double[1][N];
 
-        double adjK = K;
+        double adjK = strike;
         if (method == PricerMethod.ADJUSTED_STRIKE) {
-                adjK = K + eBasketG - eBasketA;
+                adjK = strike + eBasketG - eBasketA;
         }
 
         for (int i =0; i< path; i++) {
@@ -233,7 +257,7 @@ public class OptionPricer {
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
-            double sqT = Math.sqrt(T);
+            double sqT = Math.sqrt(timeToMature);
             for (int j = 0; j<N; j++) {
                 growth[j] = drifts[j] * Math.exp(sigmas[j] * sqT * corrSamples[0][j]);
                 stocks[j] = spots[j] * growth[j];
@@ -245,7 +269,7 @@ public class OptionPricer {
 
 
 
-            aPayoff[i] = Math.max(option * (basketA - K) *discount, 0) ;
+            aPayoff[i] = Math.max(option * (basketA - strike) *discount, 0) ;
             gPayoff[i] = Math.max(option * (basketG - adjK) *discount, 0) ;
         }
 
@@ -257,7 +281,7 @@ public class OptionPricer {
             case ADJUSTED_STRIKE:
                 double covXY = getCovar(aPayoff,gPayoff);
                 double theta = covXY/getVariance(gPayoff);
-                double geo = basketGeometric(optionType, spots, adjK, T, sigmas, r, rhos);
+                double geo = basketGeometric(optionType, spots, adjK, timeToMature, sigmas, r, rhos);
                 double[] Z = ControlVariateList(aPayoff, theta,geo,gPayoff);
                 result = confidenceInterval(Z);
             default:
