@@ -12,7 +12,11 @@ import android.view.View.OnClickListener;
 import android.widget.*;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class ArithmaticBasketActivity extends Activity implements  OnClickListener, OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
+public class ArithmaticBasketActivity extends Activity implements
+        OnClickListener,
+        OnCheckedChangeListener,
+        AdapterView.OnItemSelectedListener
+{
 	private Button bCalculate;
 	private EditText  etStrikePrice, etTimetoMaturity, etInterestRate,etPath;
     private RadioGroup rgOptionType, rgMCOption;
@@ -122,25 +126,41 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
                 R.id.rho_3_1,R.id.rho_3_2,R.id.rho_3_3,
                 R.id.rho_4_1,R.id.rho_4_2,R.id.rho_4_3,R.id.rho_4_4,
                 R.id.rho_5_1,R.id.rho_5_2,R.id.rho_5_3,R.id.rho_5_4,R.id.rho_5_5};
+
         etRhos        = new EditText[rhoIds.length];
         for (int i=0; i<rhoIds.length; i++) {
             etRhos[i] = (EditText) findViewById(rhoIds[i]);
+            etRhos[i].addTextChangedListener(new EditTextFractionValidator(etRhos[i]));
         }
 
         for (int i=0; i<spotIds.length; i++) {
-            etStockPrices[i] = (EditText) findViewById(spotIds[i]);
-            etSigmas[i] = (EditText) findViewById(sigmaIds[i]);
+            EditText etStockPrice = (EditText) findViewById(spotIds[i]);
+            etStockPrices[i] = etStockPrice;
+            etStockPrices[i].addTextChangedListener(new EditTextDoubleValidator(etStockPrice));
+
+            EditText etSigma = (EditText) findViewById(sigmaIds[i]);
+            etSigmas[i] = etSigma;
+            etSigmas[i].addTextChangedListener(new EditTextFractionValidator(etSigma));
         }
 
         bCalculate = (Button) findViewById(R.id.bCalculate);
         bCalculate.setOnClickListener(this);
+
         etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
+        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+
         etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
+        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+
         etInterestRate= (EditText) findViewById(R.id.etInterestRate);
+        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+
+        etPath = (EditText) findViewById(R.id.etPath);
+        etPath.addTextChangedListener(new EditTextDoubleValidator(etPath));
+
         tvResult = (TextView) findViewById(R.id.tvResult);
         rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
         rgOptionType.setOnCheckedChangeListener(this);
-        etPath = (EditText) findViewById(R.id.etPath);
         rgMCOption = (RadioGroup) findViewById(R.id.rgMCOption);
         rgMCOption.setOnCheckedChangeListener(this);
 
@@ -192,6 +212,7 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 
     class ArithmaticBasketTask extends AsyncTask<Void, Void, double[]> implements SimulationProgessChange{
         private final OptionType optionType;
@@ -261,5 +282,6 @@ public class ArithmaticBasketActivity extends Activity implements  OnClickListen
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
         }
+
     }
 }

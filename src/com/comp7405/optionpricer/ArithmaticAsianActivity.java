@@ -91,16 +91,31 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	public void initialize(){
 		bCalculate = (Button) findViewById(R.id.bCalculate);
 		bCalculate.setOnClickListener(this);
+
 		etStockPrice = (EditText) findViewById(R.id.etStockPrice);
+        etStockPrice.addTextChangedListener(new EditTextDoubleValidator(etStockPrice));
+
 		etStrikePrice= (EditText) findViewById(R.id.etStrikePrice);
-		etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity); 
+        etStrikePrice.addTextChangedListener(new EditTextDoubleValidator(etStrikePrice));
+
+		etTimetoMaturity= (EditText) findViewById(R.id.etTimetoMaturity);
+        etTimetoMaturity.addTextChangedListener(new EditTextDoubleValidator(etTimetoMaturity));
+
 		etSigma= (EditText) findViewById(R.id.etSigma);
+        etSigma.addTextChangedListener(new EditTextFractionValidator(etSigma));
+
 		etInterestRate= (EditText) findViewById(R.id.etInterestRate);
-		tvResult = (TextView) findViewById(R.id.tvResult);
-		rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
-		rgOptionType.setOnCheckedChangeListener(this);
-		etObservation = (EditText) findViewById(R.id.etObservation);
-		etPath = (EditText) findViewById(R.id.etPath);
+        etInterestRate.addTextChangedListener(new EditTextFractionValidator(etInterestRate));
+
+        etObservation = (EditText) findViewById(R.id.etObservation);
+        etObservation.addTextChangedListener(new EditTextDoubleValidator(etObservation));
+
+        etPath = (EditText) findViewById(R.id.etPath);
+        etPath.addTextChangedListener(new EditTextDoubleValidator(etPath ));
+
+        tvResult = (TextView) findViewById(R.id.tvResult);
+        rgOptionType = (RadioGroup) findViewById(R.id.rgOption);
+        rgOptionType.setOnCheckedChangeListener(this);
 		rgMCOption = (RadioGroup) findViewById(R.id.rgMCOption);
 		rgMCOption.setOnCheckedChangeListener(this);
 
