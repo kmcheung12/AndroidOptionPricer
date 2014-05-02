@@ -1,1 +1,8 @@
 Android option pricer
+
+Demo apk at:
+bin/classes/OptionPricer.apk
+or
+https://github.com/kmcheung12/AndroidOptionPricer/blob/master/bin/classes/OptionPricer.apk
+
+Minimum supported android version: 2.3.5
