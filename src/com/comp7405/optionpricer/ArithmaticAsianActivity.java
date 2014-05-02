@@ -70,6 +70,8 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
 	public void onClick(View arg0) {
 
         try {
+            Button button = (Button) arg0;
+            button.setError(null);
             S = Double.parseDouble(etStockPrice.getText().toString());
             K = Double.parseDouble(etStrikePrice.getText().toString());
             T = Double.parseDouble(etTimetoMaturity.getText().toString());
@@ -81,6 +83,8 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
             task.execute();
 
         } catch (Exception e) {
+            Button button = (Button) arg0;
+            button.setError("Invalid input");
             e.printStackTrace();
         }
 
@@ -120,7 +124,7 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
         onCheckedChanged(rgMCOption, rgMCOption.getCheckedRadioButtonId());
         onCheckedChanged(rgOptionType, rgOptionType.getCheckedRadioButtonId());
 	}
-    class ArithmaticAsianTask extends AsyncTask<Void, Void, double[]> implements SimulationProgessChange{
+    class ArithmaticAsianTask extends AsyncTask<Void, Integer, double[]> implements SimulationProgessChange{
         private final OptionType optionType;
         private final double strike;
         private final double timeToMature;
@@ -132,7 +136,6 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
         private final double sigma;
         private final int n;
         private ProgressDialog dialog;
-        private Handler mHandler = new Handler();
 
         public ArithmaticAsianTask(Context context,OptionType optionType, double spot, double K, double T, double sigma, double r, int n, int path, PricerMethod method) {
             this.context    = context;
@@ -153,7 +156,7 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
             if (dialog!= null) {
                 final int p = (int)(progress*100);
                 if (p > 0) {
-                    dialog.setProgress(p);
+                    publishProgress(p);
                 }
             }
         }
@@ -185,8 +188,8 @@ public class ArithmaticAsianActivity extends Activity implements  OnClickListene
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
+        protected void onProgressUpdate(Integer... values) {
+            dialog.setProgress(values[0]);
         }
     }
 }

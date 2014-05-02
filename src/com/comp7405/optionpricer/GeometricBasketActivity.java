@@ -50,6 +50,8 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
 	@Override
 	public void onClick(View arg0) {
         try {
+            Button button = (Button)arg0;
+            button.setError(null);
             OptionPricer PriceCalculator = new OptionPricer();
 
             spots = new double[n];
@@ -79,6 +81,8 @@ public class GeometricBasketActivity extends Activity implements  OnClickListene
             tvResult.setText(msg);
 
         } catch (Exception e) {
+            Button button = (Button) arg0;
+            button.setError("Invalid input");
             e.printStackTrace();
         }
 	}

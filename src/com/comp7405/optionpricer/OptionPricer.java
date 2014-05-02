@@ -26,6 +26,9 @@ public class OptionPricer {
     }
 
 	public double europeanOptions(OptionType optionType, double S, double K, double T, double t, double sigma, double r){
+        if (optionType == null || S < 0 || K < 0 || T < 0 || t < 0 || sigma >1 || r >1) {
+            throw new IllegalArgumentException("Invalid input");
+        }
         double option   = optionType == OptionType.CALL ? 1.0 : -1.0;
 		double dt       = T -t;
 		double d1       = (Math.log(S/K)+(r+Math.pow(sigma, 2)/2)*dt)/(sigma*Math.sqrt(dt));
@@ -37,6 +40,9 @@ public class OptionPricer {
 	}
 	
 	public  double asianGeometric(OptionType optionType, double S, double K, double T, double sigma, double r, double n){
+        if (optionType == null || S < 0|| K < 0 || T <0|| sigma >1 || r > 1 || n < 0) {
+            throw new IllegalArgumentException("Invalid input");
+        }
         double option   = optionType == OptionType.CALL ? 1.0 : -1.0;
         double sigmaHat = sigma * (Math.sqrt((n+1)*(2*n+1)/(6*n*n)));
         double muHat    = (r - 0.5 * Math.pow(sigma,2)) * (n+1)/(2*n) + 0.5* Math.pow(sigmaHat,2);
@@ -49,6 +55,10 @@ public class OptionPricer {
 	}
 
 	public double[] asianArithmetic(OptionType optionType , double S, double K, double T, double sigma, double r, int n, int path, PricerMethod method){
+        if (optionType ==null|| S < 0 || K < 0 || T <0 || sigma >1 ||r >1 || n <0 ||path <0||method == null) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
         double option       = optionType == OptionType.CALL ? 1.0 : -1.0;
         double[] stockPath  = new double[n];
 		double[] aPayoff    = new double[path];
@@ -73,7 +83,7 @@ public class OptionPricer {
             adjK = K + eAsianG - eAsianA;
         }
         for ( int i = 0; i<path; i++){
-            if (i%(path/20) == 0) {
+            if (path > 20 && i%(path/20) == 0) {
                 if (listener != null) {
                     listener.onProgessChange((float)i/path);
                 }
@@ -137,7 +147,11 @@ public class OptionPricer {
 
 
 	public double basketGeometric(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos){
-		double option   = optionType == OptionType.CALL?1.0:-1.0;
+		if (optionType == null || spots == null || K < 0 ||T < 0|| sigmas ==null || r >1|| rhos == null) {
+            throw new IllegalArgumentException("Invalid inputs");
+        }
+
+        double option   = optionType == OptionType.CALL?1.0:-1.0;
 
         double sigmaB   = geometricBasketVolatility(sigmas, rhos);
 		double muB      = geometricBasketDrift(sigmas,sigmaB,r);
@@ -153,14 +167,19 @@ public class OptionPricer {
 }
 	
 	public double[] basketArithmetic(OptionType optionType, double[] spots, double K, double T, double[] sigmas, double r, double[][] rhos, int path, PricerMethod method){
+        if (optionType == null || spots == null || K < 0 || T < 0 || sigmas == null || r > 1 || rhos == null || path <0 || method == null) {
+            throw new IllegalArgumentException("Invalid input");
+        }
+
         double option   = optionType == OptionType.CALL? 1.0:-1.0;
         int N           = spots.length; //no. of assets
-		double[] growth = new double[N];
-		double[] stocks = new double[N];
-		double basketA  = 0;
-		double basketG  = 0;
-		double[] aPayoff =new double[path];
-		double[] gPayoff =new double[path];
+        double[] growth = new double[N];
+        double[] stocks = new double[N];
+        double basketA  = 0;
+        double basketG  = 0;
+        double[] aPayoff =new double[path];
+        double[] gPayoff =new double[path];
+
 
         double[] result = null;
 
@@ -199,7 +218,7 @@ public class OptionPricer {
 
         for (int i =0; i< path; i++) {
 
-            if (i%(path/20) == 0) {
+            if (path > 20 && i%(path/20) == 0) {
                 if (listener != null) {
                     listener.onProgessChange((float)i/path);
                 }
@@ -246,16 +265,5 @@ public class OptionPricer {
         }
 		return result;
 		
-	}
-
-	
-	//Debug output in android
-	
-	public final static class Debug{
-	    private Debug (){}
-
-	    public static void out (Object msg){
-	        Log.i ("info", msg.toString ());
-	    }
 	}
 }

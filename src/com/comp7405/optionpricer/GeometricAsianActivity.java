@@ -48,6 +48,8 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
 	@Override
 	public void onClick(View arg0) {
         try {
+            Button button = (Button)arg0;
+            button.setError(null);
 
             OptionPricer pricer = new OptionPricer();
 
@@ -62,6 +64,8 @@ public class GeometricAsianActivity extends Activity implements  OnClickListener
             String msg = String.format("Option price: %.4f", result);
             tvResult.setText(msg);
         } catch (Exception e) {
+            Button button = (Button)arg0;
+            button.setError("Invalid input");
             e.printStackTrace();
         }
 	}

@@ -72,6 +72,8 @@ public class ArithmaticBasketActivity extends Activity implements
 	@Override
 	public void onClick(View arg0) {
         try {
+            Button button = (Button) arg0;
+            button.setError(null);
             spots = new double[n];
             sigmas = new double[n];
             for (int i=0; i<n; i++) {
@@ -98,8 +100,10 @@ public class ArithmaticBasketActivity extends Activity implements
 
 
             ArithmaticBasketTask task = new ArithmaticBasketTask(this, optionType, spots, K, T, sigmas, r, rhos, path, method);
-                    task.execute();
+            task.execute();
         } catch (Exception e) {
+            Button button = (Button) arg0;
+            button.setError("Invalid input");
             e.printStackTrace();
         }
 
@@ -209,7 +213,7 @@ public class ArithmaticBasketActivity extends Activity implements
     }
 
 
-    class ArithmaticBasketTask extends AsyncTask<Void, Void, double[]> implements SimulationProgessChange{
+    class ArithmaticBasketTask extends AsyncTask<Void, Integer, double[]> implements SimulationProgessChange{
         private final OptionType optionType;
         private final double[] spots;
         private final double strike;
@@ -242,7 +246,7 @@ public class ArithmaticBasketActivity extends Activity implements
             if (dialog!= null) {
                 final int p = (int)(progress*100);
                 if (p > 0) {
-                    dialog.setProgress(p);
+                    publishProgress(p);
                 }
             }
         }
@@ -267,6 +271,7 @@ public class ArithmaticBasketActivity extends Activity implements
 
         @Override
         protected void onPostExecute(double[] result) {
+            dialog.setProgress(100);
             dialog.dismiss();
             tvResult = (TextView) findViewById(R.id.tvResult);
             String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
@@ -274,8 +279,8 @@ public class ArithmaticBasketActivity extends Activity implements
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
+        protected void onProgressUpdate(Integer... values) {
+            dialog.setProgress(values[0]);
         }
 
     }
