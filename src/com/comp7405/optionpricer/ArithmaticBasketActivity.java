@@ -264,9 +264,14 @@ public class ArithmaticBasketActivity extends Activity implements
 
         @Override
         protected double[] doInBackground(Void... voids) {
-            OptionPricer pricer = new OptionPricer();
-            pricer.setListener(this);
-            return pricer.basketArithmetic(optionType,spots,strike,timeToMature,sigmas,r,rhos,path,method);
+            try {
+                OptionPricer pricer = new OptionPricer();
+                pricer.setListener(this);
+                return pricer.basketArithmetic(optionType,spots,strike,timeToMature,sigmas,r,rhos,path,method);
+            } catch (Exception e) {
+                dialog.dismiss();
+                return new double[]{-1,0,0};
+            }
         }
 
         @Override
@@ -275,6 +280,10 @@ public class ArithmaticBasketActivity extends Activity implements
             dialog.dismiss();
             tvResult = (TextView) findViewById(R.id.tvResult);
             String msg = String.format("Option price: %.4f\n95%% confidence interval: [%.4f , %.4f]", result[0], result[1], result[2]);
+            if (result[0] == -1) {
+                msg = "Invalid parameters";
+                tvResult.setError(msg);
+            }
             tvResult.setText(msg);
         }
 
